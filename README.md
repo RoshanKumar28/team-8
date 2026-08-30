@@ -27,7 +27,7 @@ The 10 features the product is built around — each with its one-line promise, 
 | 3 | **Name personalization everywhere** | *"This isn't a generic app. It's yours."* Captured once at onboarding, used naturally in every greeting, check-in, and report. | ❌ (name not yet asked at onboarding) |
 | 4 | **Proactive check-ins** | *"We check on you. Not the other way around."* App reaches out after quiet days or a rough entry — warm, never guilt. | ✅ (7 deterministic follow-up rules, coach speaks first) |
 | 5 | **Symptom-to-cause pattern mapping** | *"Find out what's actually triggering your symptoms."* Correlates her symptoms against her food/sleep/stress. Observations, never diagnoses — with pattern strength shown ("seen 4× in 2 months"). | 🟡 (meal→energy and low-energy-streak patterns live; full correlation engine planned) |
-| 7 | **Cycle + symptom dual tracker** | *"Built for irregular cycles — because that's the reality of PCOS."* Two independent logs, layered on one dashboard; never assumes 28 days. | 🟡 (symptom/check-in log live; period start/end logging planned) |
+| 7 | **Cycle + symptom dual tracker** | *"Built for irregular cycles — because that's the reality of PCOS."* Two independent logs, layered on one dashboard; never assumes 28 days. | 🟡 (symptom/check-in log live; period tap-log live on a uterus-shaped dot grid with honest cycle-gap stats; layered dashboard planned) |
 | 9 | **Medication & supplement log + reminders** | *"Remembering to take it is half the battle. We've got that half."* Dose, schedule, gentle reminders, adherence history. | 🟡 (meds captured at onboarding; dedicated rows + reminders planned) |
 | 12 | **Mood-cycle correlation view** | *"Your mood isn't random. Let's see the pattern."* Mood plotted against cycle day — heat-map style, with a plain note when a pattern emerges. Turns "am I overreacting?" into "it's hormonal, not a character flaw." | ❌ |
 | 15 | **Recipe & meal suggestions by symptom** | *"Meals that work with your body, not against it."* Recipes tagged by phenotype, each with a one-line sourced "why this helps." | ❌ (meal *logging* is live; suggestions planned) |
@@ -80,12 +80,13 @@ The 10 features the product is built around — each with its one-line promise, 
 - ✅ Proactive follow-ups, coach speaks first (7 deterministic rules: repeated excuse → scope cut · missed yesterday · clean day noticed · carb-crash pattern in meals · 3 low-energy days · gone quiet · daily nudge)
 - ✅ ⏭ next-day time jump (demo device)
 - ✅ Early-signs strip on Today
+- ✅ Journey map — candy-crush-style day-level road: 7 nodes/week from her real logs (done/partial/missed/today), week banners with tasks + checkpoints, "the road keeps going" ending
 - 🟡 Med/supplement adherence (captured; no dedicated rows/reminders yet)
 - ✅ Daily 30-second check-in — mood/sleep/energy chips, one tap each, every row skippable
 - ✅ Meal log — plate *shape* + the two hours after, never calories (the insulin story in her words)
 - ✅ Coach names the food pattern first ("carb-led lunch → sleepy after, twice this week")
 - ✅ Coach flags three low-energy days in a row before she has to raise it
-- ❌ Period start/end logging
+- ✅ Period logging — tap-to-log days on a uterus-shaped dot grid, one per month; cycle-gap stats with no fake predictions
 - ❌ Flare-mode button — bad day collapses the plan to one thing
 - ❌ Real notifications/reminders
 
@@ -99,7 +100,7 @@ The 10 features the product is built around — each with its one-line promise, 
 - ✅ Check-in history + meal history on the Memory screen
 - ✅ Session log
 - ✅ Persistence + old-session migration (localStorage)
-- ❌ Trends charts (cycle length, symptoms over time)
+- 🟡 Trends (cycle-gap stats live on Cycle; symptom charts planned)
 - ❌ Mood-cycle correlation view ("I'm not crazy, it's hormonal")
 - ❌ Flare-up predictor card ("your mood tends to dip around day 26 — that's Thursday")
 - ❌ Symptom-to-trigger pattern card (framed "early pattern, not proof")
