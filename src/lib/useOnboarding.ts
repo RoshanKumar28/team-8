@@ -89,7 +89,7 @@ export function useOnboarding() {
     setLastReport(r);
     patch((s) => {
       s.memory.labs.push(...r.labs);
-      s.memory.reports.push({ name: r.sourceName, kind: r.kind, takenOn: r.takenOn });
+      s.memory.reports.push({ name: r.sourceName, kind: r.kind, takenOn: r.takenOn, fileKey: r.fileKey });
       Object.assign(s.memory.profile, r.prefill);
       Object.assign(s.memory.criteria, r.criteriaSignals);
     });

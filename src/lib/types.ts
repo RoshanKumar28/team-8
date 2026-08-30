@@ -11,6 +11,7 @@ export type Lab = {
 };
 
 export type ExtractedReport = {
+  fileKey?: string;
   kind: "bloodwork" | "ultrasound" | "mixed" | "unreadable";
   sourceName: string;
   takenOn: string;
@@ -144,7 +145,7 @@ export type Memory = {
   medTakes: MedTake[];
   profile: Profile;
   labs: Lab[];
-  reports: { name: string; kind: string; takenOn: string }[];
+  reports: { name: string; kind: string; takenOn: string; fileKey?: string }[];
   criteria: Criteria;
   leadingIndicators: LeadingIndicator[];
   commitments: Commitment[];

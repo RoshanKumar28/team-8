@@ -3,7 +3,10 @@ import type { ExtractedReport } from "./types";
 // Report reading is deliberately isolated. Today it returns a demo fixture;
 // when a vision-capable key is available only extractWithModel() changes.
 export async function extractReport(fileName: string, kind: "pdf" | "image"): Promise<ExtractedReport> {
-  if (process.env.LLM_API_KEY) {
+  // Vision extraction is not wired yet — a set API key must not route uploads
+  // into the throwing stub and hand the user "unreadable" in a live demo.
+  const VISION_WIRED = false;
+  if (VISION_WIRED && process.env.LLM_API_KEY && process.env.MOCK_AI !== "1") {
     try {
       return await extractWithModel(fileName, kind);
     } catch {

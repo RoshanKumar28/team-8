@@ -5,6 +5,7 @@ import { Camera, FileUp, ScanLine, ShieldCheck } from "lucide-react";
 import StepShell from "./StepShell";
 import Button from "../ui/Button";
 import type { ExtractedReport } from "@/lib/types";
+import { fileToStorableDataUrl, saveReportFile } from "@/lib/files";
 
 /* Physical paper is the norm for scans — camera capture is a first-class path
    here, not something hidden behind a file picker. */
@@ -26,12 +27,17 @@ export default function ReportStep({
     setBusy(true);
     setError("");
     try {
+      // Keep her copy first — the original never leaves the browser for storage.
+      const fileKey = `f_${Date.now().toString(36)}`;
+      const dataUrl = await fileToStorableDataUrl(f);
+      const kept = dataUrl ? saveReportFile(fileKey, f.name, f.type, dataUrl) : false;
+
       const body = new FormData();
       body.append("file", f);
       const res = await fetch("/api/extract", { method: "POST", body });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Couldn't read that");
-      onExtracted(data as ExtractedReport);
+      onExtracted({ ...(data as ExtractedReport), fileKey: kept ? fileKey : undefined } as ExtractedReport & { fileKey?: string });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Couldn't read that file");
     } finally {
