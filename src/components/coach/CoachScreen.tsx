@@ -8,11 +8,13 @@ import JourneyView from "./JourneyView";
 import CycleLog from "./CycleLog";
 import { OvyFlower } from "../ui/Logo";
 import DailyCheckIn from "../daily/DailyCheckIn";
+import DayLogSheet from "../cycle/DayLogSheet";
+import MedsManager from "../meds/MedsManager";
 import { Sun, Map, Flower2, MessageCircleHeart, BookHeart } from "lucide-react";
 import { followUp } from "@/lib/followup";
 import { askPermission, notifyCoach } from "@/lib/notify";
 import CoachToast from "../ui/CoachToast";
-import type { CheckIn, MealLog, Session } from "@/lib/types";
+import type { CheckIn, CycleDayLog, MealLog, Medication, MedTiming, Session } from "@/lib/types";
 
 /* Opening line is built from the onboarding data — the first thing she sees
    is proof the coach was listening, not "Hi, how can I help you today?" */
@@ -38,6 +40,8 @@ export default function CoachScreen({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [checkingIn, setCheckingIn] = useState(false);
+  const [dayLogDate, setDayLogDate] = useState<string | null>(null);
+  const [managingMeds, setManagingMeds] = useState(false);
   const [unread, setUnread] = useState(false);
 
   useEffect(() => {
@@ -114,11 +118,44 @@ export default function CoachScreen({
     onUpdate(next);
   }
 
-  function togglePeriod(date: string) {
+  // Saving a day log is the single source of truth: flow presence drives the
+  // period-dot grid, so the two can never disagree.
+  function saveDayLog(log: CycleDayLog) {
     const next: Session = JSON.parse(JSON.stringify(session));
+    next.memory.cycleLogs = (next.memory.cycleLogs ?? []).filter((l) => l.date !== log.date);
+    next.memory.cycleLogs.push(log);
     const set = new Set(next.memory.periodDates ?? []);
-    if (set.has(date)) set.delete(date); else set.add(date);
+    if (log.flow) set.add(log.date); else set.delete(log.date);
     next.memory.periodDates = [...set].sort();
+    onUpdate(next);
+  }
+
+  function takeMed(medId: string, timing: MedTiming) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    const i = next.memory.medTakes.findIndex(
+      (t) => t.day === next.day && t.medId === medId && t.timing === timing,
+    );
+    if (i >= 0) next.memory.medTakes.splice(i, 1);
+    else next.memory.medTakes.push({ day: next.day, medId, timing, ts: Date.now() });
+    onUpdate(next);
+  }
+
+  function addMed(m: Omit<Medication, "id">) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    next.memory.medications.push({ ...m, id: Math.random().toString(36).slice(2, 8) });
+    onUpdate(next);
+  }
+
+  function removeMed(id: string) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    next.memory.medications = next.memory.medications.filter((m) => m.id !== id);
+    onUpdate(next);
+  }
+
+  function toggleRemind(id: string) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    const m = next.memory.medications.find((x) => x.id === id);
+    if (m) m.remind = !m.remind;
     onUpdate(next);
   }
 
@@ -199,12 +236,14 @@ export default function CoachScreen({
           onCheck={check}
           onJumpDay={jumpDay}
           onOpenCheckIn={() => setCheckingIn(true)}
+          onTakeMed={takeMed}
+          onManageMeds={() => setManagingMeds(true)}
         />
       )}
-      {tab === "journey" && <JourneyView session={session} />}
-      {tab === "cycle" && <CycleLog session={session} onToggle={togglePeriod} />}
+      {tab === "journey" && <div key="journey" className="pop-spring flex min-h-0 flex-1 flex-col"><JourneyView session={session} /></div>}
+      {tab === "cycle" && <div key="cycle" className="pop-spring flex min-h-0 flex-1 flex-col"><CycleLog session={session} onOpenDay={setDayLogDate} /></div>}
       {tab === "chat" && <ChatThread session={session} busy={busy} error={error} onSend={send} />}
-      {tab === "memory" && <MemoryView memory={session.memory} />}
+      {tab === "memory" && <div key="memory" className="pop-spring flex min-h-0 flex-1 flex-col"><MemoryView memory={session.memory} /></div>}
 
       <nav className="shrink-0 border-t border-line bg-surface px-2 pb-4 pt-1.5">
         <div className="flex">

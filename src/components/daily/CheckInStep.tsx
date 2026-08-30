@@ -80,7 +80,7 @@ export default function CheckInStep({
     >
       <div className="space-y-5">
         {ROWS.map((row) => (
-          <div key={row.key}>
+          <div key={row.key} className="pop-spring" style={{ animationDelay: `${ROWS.indexOf(row) * 90}ms` }}>
             <div className="mb-1.5 flex items-baseline justify-between gap-2">
               <span className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
                 {(() => { const I: LucideIcon = row.key === "mood" ? Smile : row.key === "sleep" ? Moon : Zap; return <I size={14} className="text-brand" />; })()}

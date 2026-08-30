@@ -60,7 +60,7 @@ export type Commitment = {
   id: string;
   text: string;
   due: string;
-  status: "pending" | "done" | "partial" | "missed";
+  status: "pending" | "done" | "partial" | "missed" | "paused";
   note: string;
 };
 
@@ -155,7 +155,7 @@ export type Memory = {
   skipped: string[];
 };
 
-export type Turn = { role: "user" | "coach"; text: string; ts: number };
+export type Turn = { role: "user" | "coach"; text: string; ts: number; quick?: string[] };
 export type Phase = "intake" | "plan" | "session";
 
 export type Session = {

@@ -18,6 +18,28 @@ export function followUp(s: Session): string | null {
     return `I've noticed something. Twice now the thing that got in the way was "${repeated.toLowerCase()}". That's not a willpower problem, that's a plan problem — I planned around a life you don't have. So I'm cutting scope: this week, only the morning protein. Everything else is paused, and that's my call, not your failure. Deal?`;
   }
 
+  // 1b) Med doses missed yesterday → the gentle reminder, tied to why it matters.
+  const meds = m.medications ?? [];
+  if (meds.length > 0) {
+    const yesterdayDue = meds.filter((x) => x.remind).flatMap((x) => x.timings.map((t) => ({ med: x, t })));
+    const yesterdayTaken = (m.medTakes ?? []).filter((t) => t.day === s.day - 1);
+    const missedDoses = yesterdayDue.filter(
+      ({ med, t }) => !yesterdayTaken.some((k) => k.medId === med.id && k.timing === t),
+    );
+    if (yesterdayDue.length > 0 && missedDoses.length >= yesterdayDue.length && s.day > 1) {
+      const names = [...new Set(missedDoses.map((d) => d.med.name))].join(" and ");
+      return `Small one, no lecture: yesterday's ${names} didn't get ticked. If you took ${missedDoses.length > 1 ? "them" : "it"} and just didn't log, tap it now so your doctor sees the real record. If you genuinely forgot — that's exactly what I'm here for. Today's doses are on your Today tab.`;
+    }
+  }
+
+  // 1c) Heavy flow logged yesterday → check in like a person would.
+  const heavyYesterday = (m.cycleLogs ?? []).find(
+    (l) => l.flow === "heavy" && Math.abs(new Date(l.date).getTime() - Date.now()) < 3 * 86400000,
+  );
+  if (heavyYesterday && (m.cycleLogs ?? []).some((l) => l.date === heavyYesterday.date && (l.pain.length > 0))) {
+    return `I saw the heavy day with ${heavyYesterday.pain.join(" and ").toLowerCase()} in your log. Days like that, the plan shrinks to one thing and that's by design. How are you feeling today — honestly?`;
+  }
+
   // 2) Yesterday had misses → ask about it, warmly, specifically.
   const missedYesterday = m.checks.filter((k) => k.day === s.day - 1 && !k.done);
   if (missedYesterday.length > 0) {

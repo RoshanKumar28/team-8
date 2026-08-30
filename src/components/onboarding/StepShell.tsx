@@ -27,7 +27,7 @@ export default function StepShell({
               <ChevronLeft size={20} />
             </button>
           )}
-          <div className="min-w-0">
+          <div className="pop-spring min-w-0">
             {eyebrow && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-brand">{eyebrow}</p>}
             <h1 className="font-display text-[22px] font-semibold leading-tight text-ink">{title}</h1>
             {subtitle && <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{subtitle}</p>}

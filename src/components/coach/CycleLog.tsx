@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Droplets } from "lucide-react";
+import { ChevronLeft, ChevronRight, Droplets, NotebookPen } from "lucide-react";
 import type { Session } from "@/lib/types";
 
 /* Period log as a uterus-shaped dot grid — one shape per month, one dot per
@@ -25,11 +25,16 @@ const iso = (y: number, m: number, d: number) =>
   `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
 export default function CycleLog({
-  session, onToggle,
-}: { session: Session; onToggle: (date: string) => void }) {
+  session, onOpenDay,
+}: { session: Session; onOpenDay: (date: string) => void }) {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const logged = useMemo(() => new Set(session.memory.periodDates ?? []), [session.memory.periodDates]);
+  const flowOf = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const l of session.memory.cycleLogs ?? []) if (l.flow) map.set(l.date, l.flow);
+    return map;
+  }, [session.memory.cycleLogs]);
   const todayIso = iso(now.getFullYear(), now.getMonth(), now.getDate());
 
   // naive stats from logged data — honest ranges, never a confident prediction
@@ -78,7 +83,7 @@ export default function CycleLog({
           const daysInMonth = new Date(year, m + 1, 0).getDate();
           let day = 0;
           return (
-            <div key={name} className="flex flex-col items-center">
+            <div key={name} className="pop-spring flex flex-col items-center" style={{ animationDelay: `${m * 40}ms` }}>
               <p className="mb-1.5 text-[11px] font-bold text-ink">{name}</p>
               <div className="flex flex-col gap-[3px]">
                 {SHAPE.map((row, r) => (
@@ -93,10 +98,14 @@ export default function CycleLog({
                       return (
                         <button
                           key={c}
-                          onClick={() => onToggle(d)}
+                          onClick={() => onOpenDay(d)}
                           aria-label={`${name} ${day}`}
                           className={`h-[9px] w-[9px] rounded-[2.5px] transition ${
-                            on ? "bg-brand" : "bg-brandsoft hover:bg-brand/40"
+                            on
+                              ? flowOf.get(d) === "heavy" ? "bg-bad"
+                                : flowOf.get(d) === "spotting" ? "bg-brand/50"
+                                : "bg-brand"
+                              : "bg-brandsoft hover:bg-brand/40"
                           } ${isToday ? "ring-1 ring-accent ring-offset-1" : ""}`}
                         />
                       );
@@ -115,6 +124,16 @@ export default function CycleLog({
         <span className="flex items-center gap-1.5"><span className="h-[9px] w-[9px] rounded-[2.5px] bg-brandsoft ring-1 ring-accent" /> today</span>
       </div>
       <p className="mt-1 text-center text-[10px] text-faint">Each month is a uterus. Because it is.</p>
+
+      <div className="px-5 pt-4">
+        <button
+          onClick={() => onOpenDay(todayIso)}
+          className="card-soft flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3 text-[13.5px] font-bold text-brandink"
+        >
+          <NotebookPen size={15} /> Log today — flow, pain, body
+        </button>
+        <p className="mt-1.5 text-center text-[10.5px] text-faint">Or tap any dot to log that day.</p>
+      </div>
     </div>
   );
 }

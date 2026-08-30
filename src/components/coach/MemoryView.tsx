@@ -2,7 +2,7 @@
 
 import {
   Target, Sparkles, ClipboardCheck, Lightbulb, ListChecks, FlaskConical,
-  HeartPulse, UtensilsCrossed, User, CalendarHeart, type LucideIcon,
+  HeartPulse, UtensilsCrossed, User, CalendarHeart, Pill, type LucideIcon,
 } from "lucide-react";
 import { mealsByDay } from "@/lib/followup";
 import type { Memory } from "@/lib/types";
@@ -17,9 +17,11 @@ const statusStyle: Record<string, string> = {
 };
 const critLabel = { met: "Met", not_met: "Not met", unknown: "Unknown" };
 
+let sectionIndex = 0;
 function Section({ title, hint, icon: Icon, children }: { title: string; hint?: string; icon?: LucideIcon; children: React.ReactNode }) {
+  const delay = (sectionIndex++ % 9) * 60;
   return (
-    <section className="border-b border-line px-4 py-4">
+    <section className="pop-spring border-b border-line px-4 py-4" style={{ animationDelay: `${delay}ms` }}>
       <div className="mb-2 flex items-baseline justify-between gap-2">
         <h2 className="flex items-center gap-1.5 font-display text-[13px] font-semibold text-ink">
           {Icon && <Icon size={14} className="text-brand" />}
@@ -211,6 +213,25 @@ export default function MemoryView({ memory }: { memory: Memory }) {
           <Empty t="Add any report — even one taken for something else." />
         )}
       </Section>
+
+      {memory.medications.length > 0 && (
+        <Section icon={Pill} title="Meds & supplements" hint="what your doctor will ask about">
+          <ul className="space-y-1.5 text-[12.5px]">
+            {memory.medications.map((m) => {
+              const due = memory.medTakes.filter((t) => t.medId === m.id).length;
+              return (
+                <li key={m.id} className="flex items-baseline justify-between gap-2">
+                  <span className="text-ink">
+                    <span className="font-semibold">{m.name}</span> {m.dose}
+                    <span className="text-faint"> · {m.timings.join(", ")}</span>
+                  </span>
+                  <span className="shrink-0 text-[11.5px] font-bold text-good">{due} doses logged</span>
+                </li>
+              );
+            })}
+          </ul>
+        </Section>
+      )}
 
       <Section icon={User} title="Your life" hint="context, not just symptoms">
         <dl className="space-y-1 text-[12.5px]">

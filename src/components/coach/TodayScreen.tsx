@@ -3,19 +3,22 @@
 import { useState } from "react";
 import { Check, X, FastForward, NotebookPen, Sparkles, TrendingUp, TrendingDown, Minus, Pencil } from "lucide-react";
 import { CloudRainWind } from "lucide-react";
+import MedsCard from "../meds/MedsCard";
 import { todaysTasks } from "@/lib/followup";
 import { flareCopy, predictFlare } from "@/lib/predict";
-import type { Session } from "@/lib/types";
+import type { MedTiming, Session } from "@/lib/types";
 
 const REASONS = ["Schedule blew up", "No energy", "Flare / cramps", "Forgot", "Didn't feel like it"];
 
 export default function TodayScreen({
-  session, onCheck, onJumpDay, onOpenCheckIn,
+  session, onCheck, onJumpDay, onOpenCheckIn, onTakeMed, onManageMeds,
 }: {
   session: Session;
   onCheck: (commitmentId: string, done: boolean, reason: string) => void;
   onJumpDay: () => void;
   onOpenCheckIn: () => void;
+  onTakeMed: (medId: string, timing: MedTiming) => void;
+  onManageMeds: () => void;
 }) {
   const [asking, setAsking] = useState<string | null>(null); // commitmentId awaiting a reason
   const tasks = todaysTasks(session);
@@ -94,6 +97,8 @@ export default function TodayScreen({
             )}
           </button>
         )}
+
+        <MedsCard session={session} onTake={onTakeMed} onManage={onManageMeds} />
 
         {tasks.length === 0 && (
           <div className="rounded-[var(--r-md)] border border-line bg-surface p-4 text-center">
