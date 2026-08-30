@@ -19,7 +19,9 @@ export async function chatJSON<T>(system: string, messages: Msg[]): Promise<T> {
       response_format: { type: "json_object" },
       temperature: 0.6,
       max_tokens: 4000,
-      providerOptions: { gateway: { only: ["zai", "novita", "gmicloud"] } },
+      ...(BASE.includes("ai-gateway.vercel.sh")
+        ? { providerOptions: { gateway: { only: ["zai", "novita", "gmicloud"] } } }
+        : {}),
     }),
   });
 

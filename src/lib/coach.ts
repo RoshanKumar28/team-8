@@ -74,13 +74,16 @@ export function checkRedFlags(text: string): RedFlag {
 function digest(s: Session): string {
   const m = s.memory;
   const p = m.profile;
+  // Sessions created before newer profile fields existed still flow through
+  // here (old localStorage, external callers) — arrays must never be assumed.
+  const arr = (v: unknown): string[] => (Array.isArray(v) ? v : []);
   const known = Object.entries({
     Name: p.name, Age: p.age, Diagnosed: p.diagnosed,
-    "PRIORITIES (her order)": p.concerns.join(" -> ") || p.primaryConcern, "Why it matters": p.primaryConcernWhy,
+    "PRIORITIES (her order)": arr(p.concerns).join(" -> ") || p.primaryConcern, "Why it matters": p.primaryConcernWhy,
     "Cycle length": p.cycleLength, "Cycle regularity": p.cycleRegularity,
-    Symptoms: p.symptoms.join(", "), Job: p.job, Stress: p.stress,
+    Symptoms: arr(p.symptoms).join(", "), Job: p.job, Stress: p.stress,
     Sleep: p.sleep, Activity: p.activity,
-    "Already tried": p.tried.join("; "), Medications: p.meds.join(", "),
+    "Already tried": arr(p.tried).join("; "), Medications: arr(p.meds).join(", "),
   }).filter(([, v]) => v && v !== "unsure").map(([k, v]) => `${k}: ${v}`);
 
   return `WHAT YOU ALREADY KNOW (never re-ask any of this):
@@ -96,7 +99,7 @@ ROTTERDAM CRITERIA SO FAR:
 - Irregular/absent ovulation: ${m.criteria.irregularCycles.state} ${m.criteria.irregularCycles.evidence}
 - Signs of high androgen: ${m.criteria.highAndrogen.state} ${m.criteria.highAndrogen.evidence}
 - Ovarian morphology: ${m.criteria.ovarianMorphology.state} ${m.criteria.ovarianMorphology.evidence}
-- Still missing: ${m.criteria.missingToConfirm.join(", ") || "unknown"}
+- Still missing: ${arr(m.criteria.missingToConfirm).join(", ") || "unknown"}
 
 COMMITMENTS:
 ${m.commitments.map((c) => `- [${c.id}] ${c.text} (due ${c.due}) — ${c.status}${c.note ? ` — ${c.note}` : ""}`).join("\n") || "(none)"}
