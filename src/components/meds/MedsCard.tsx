@@ -1,6 +1,6 @@
 "use client";
 
-import { Pill, Leaf, Plus, BellRing, Check } from "lucide-react";
+import { Pill, Leaf, Plus, BellRing, Check, ChevronRight } from "lucide-react";
 import type { MedTiming, Session } from "@/lib/types";
 
 const TIMING_LABEL: Record<MedTiming, string> = { morning: "AM", afternoon: "Noon", evening: "PM" };
@@ -25,8 +25,9 @@ export default function MedsCard({
   if (meds.length === 0) {
     return (
       <button onClick={onManage}
+        style={{ animationDelay: "110ms" }}
         className="card-soft pop-spring flex w-full items-center gap-3 rounded-[var(--r-md)] bg-accentsoft p-3.5 text-left transition hover:opacity-90">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-brandink">
+        <span className="wave grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-brandink">
           <Pill size={16} />
         </span>
         <span className="min-w-0 flex-1">
@@ -35,7 +36,7 @@ export default function MedsCard({
             Metformin, inositol, anything — one tap a day, gentle reminders.
           </span>
         </span>
-        <Plus size={16} className="shrink-0 text-accent" />
+        <ChevronRight size={16} className="shrink-0 text-accent" />
       </button>
     );
   }
