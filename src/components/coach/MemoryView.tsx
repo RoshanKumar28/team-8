@@ -76,9 +76,9 @@ export default function MemoryView({ memory }: { memory: Memory }) {
       </Section>
 
       <Section title="Your daily check-ins" hint="30 seconds a day, most days">
-        {memory.checkIns.length ? (
+        {(memory.checkIns ?? []).length ? (
           <ul className="space-y-2">
-            {[...memory.checkIns].sort((a, b) => b.day - a.day).slice(0, 7).map((c) => (
+            {[...(memory.checkIns ?? [])].sort((a, b) => b.day - a.day).slice(0, 7).map((c) => (
               <li key={c.day} className="text-[12.5px]">
                 <div className="flex items-baseline gap-2">
                   <span className="shrink-0 font-semibold text-ink">Day {c.day}</span>
@@ -96,9 +96,9 @@ export default function MemoryView({ memory }: { memory: Memory }) {
       </Section>
 
       <Section title="What you've been eating" hint="shape of the plate, never calories">
-        {memory.meals.length ? (
+        {(memory.meals ?? []).length ? (
           <ul className="space-y-2.5">
-            {mealsByDay(memory.meals).slice(0, 4).map(({ day, meals }) => (
+            {mealsByDay(memory.meals ?? []).slice(0, 4).map(({ day, meals }) => (
               <li key={day}>
                 <p className="text-[11px] font-bold uppercase tracking-wide text-faint">Day {day}</p>
                 <ul className="mt-0.5 space-y-1">

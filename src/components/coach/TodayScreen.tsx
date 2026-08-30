@@ -18,8 +18,8 @@ export default function TodayScreen({
   const tasks = todaysTasks(session);
   const doneCount = tasks.filter((t) => t.check?.done).length;
   const concern = session.memory.profile.primaryConcern;
-  const checkIn = session.memory.checkIns.find((c) => c.day === session.day) ?? null;
-  const meals = session.memory.meals.filter((m) => m.day === session.day);
+  const checkIn = (session.memory.checkIns ?? []).find((c) => c.day === session.day) ?? null;
+  const meals = (session.memory.meals ?? []).filter((m) => m.day === session.day);
 
   return (
     <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-bg">

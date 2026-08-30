@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ChatThread from "./ChatThread";
 import MemoryView from "./MemoryView";
 import TodayScreen from "./TodayScreen";
+import JourneyView from "./JourneyView";
 import DailyCheckIn from "../daily/DailyCheckIn";
 import { followUp } from "@/lib/followup";
 import type { CheckIn, MealLog, Session } from "@/lib/types";
@@ -13,20 +14,12 @@ import type { CheckIn, MealLog, Session } from "@/lib/types";
 function opener(s: Session): string {
   const p = s.memory.profile;
   if (!p.primaryConcern) {
-    const symptoms = p.symptoms.length
-      ? `You told me about ${p.symptoms.slice(0, 4).map((x) => x.toLowerCase()).join(", ")}${p.symptoms.length > 4 ? " and more" : ""}. `
-      : "";
-    return `${symptoms}Before I build anything, one question that decides everything else: of all of it, which one actually gets to you — the one you think about in the mirror? There's no wrong answer, and "I honestly don't know, it all feels connected" is a fine one too — I'll figure it out with you as we go.`;
+    return `Hey${p.name ? ` ${p.name}` : ""} — I've read everything you gave me. One question before anything else: which of it actually gets to you the most? ("I don't know, it all feels connected" is a fine answer too.)`;
   }
   const bits: string[] = [];
-  const rest = p.concerns.slice(1);
-  bits.push(
-    rest.length
-      ? `So — ${p.primaryConcern.toLowerCase()} first, with ${rest.map((c) => c.toLowerCase()).join(" and ")} on the board too.`
-      : `So — ${p.primaryConcern.toLowerCase()}. That's what we're aiming at.`
-  );
-  if (p.primaryConcernWhy) bits.push(`And I heard why: "${p.primaryConcernWhy}". I'll remember that on the days this feels pointless.`);
-  bits.push(`One honest thing before we build the plan: how long has this been going on, and what does a bad day with it actually look like?`);
+  bits.push(`So — ${p.primaryConcern.toLowerCase()}. That's our lead.`);
+  if (p.primaryConcernWhy) bits.push(`I'll remember why.`);
+  bits.push(`Quick one: what does a bad day with it look like?`);
   return bits.join(" ");
 }
 
@@ -36,7 +29,7 @@ export default function CoachScreen({
   session: Session;
   onUpdate: (s: Session) => void;
 }) {
-  const [tab, setTab] = useState<"today" | "chat" | "memory">(session.memory.plan ? "today" : "chat");
+  const [tab, setTab] = useState<"today" | "journey" | "chat" | "memory">(session.memory.plan ? "today" : "chat");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [checkingIn, setCheckingIn] = useState(false);
@@ -80,7 +73,7 @@ export default function CoachScreen({
   // correcting the record, not logging a second morning.
   function saveCheckIn(c: Omit<CheckIn, "ts">) {
     const next: Session = JSON.parse(JSON.stringify(session));
-    next.memory.checkIns = next.memory.checkIns.filter((x) => x.day !== c.day);
+    next.memory.checkIns = (next.memory.checkIns ?? []).filter((x) => x.day !== c.day);
     next.memory.checkIns.push({ ...c, ts: Date.now() });
     onUpdate(next);
   }
@@ -88,7 +81,7 @@ export default function CoachScreen({
   function saveMeals(meals: Omit<MealLog, "id" | "ts">[]) {
     if (meals.length === 0) return;
     const next: Session = JSON.parse(JSON.stringify(session));
-    next.memory.meals.push(
+    (next.memory.meals ??= []).push(
       ...meals.map((m) => ({ ...m, id: Math.random().toString(36).slice(2, 8), ts: Date.now() })),
     );
     onUpdate(next);
@@ -145,7 +138,7 @@ export default function CoachScreen({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <header className="shrink-0 border-b border-line bg-surface px-4 pb-0 pt-11">
+      <header className="shrink-0 px-4 pb-3 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
         <div className="flex items-center gap-3 pb-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent font-display text-[15px] font-semibold text-brandink">
             {p.name ? p.name[0].toUpperCase() : "C"}
@@ -159,23 +152,29 @@ export default function CoachScreen({
             </p>
           </div>
         </div>
-        <nav className="flex gap-1">
-          {(["today", "chat", "memory"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`rounded-t-[var(--r-sm)] px-3.5 py-2 text-[12.5px] font-semibold transition ${
-                tab === t
-                  ? "border-b-2 border-brand text-brand"
-                  : "text-faint hover:text-muted"
-              }`}
-            >
-              {t === "today" ? "Today" : t === "chat" ? "Coach" : "Memory"}
-            </button>
-          ))}
-        </nav>
+        {session.memory.plan && (
+          <nav className="flex gap-1">
+            {(["today", "journey", "chat", "memory"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`rounded-t-[var(--r-sm)] px-3 py-2 text-[12.5px] font-semibold transition ${
+                  tab === t
+                    ? "border-b-2 border-brand text-brand"
+                    : "text-faint hover:text-muted"
+                }`}
+              >
+                {t === "today" ? "Today" : t === "journey" ? "Journey" : t === "chat" ? "Coach" : "Memory"}
+              </button>
+            ))}
+          </nav>
+        )}
       </header>
 
+      {!session.memory.plan ? (
+        <ChatThread session={session} busy={busy} error={error} onSend={send} />
+      ) : (
+        <>
       {tab === "today" && (
         <TodayScreen
           session={session}
@@ -184,8 +183,11 @@ export default function CoachScreen({
           onOpenCheckIn={() => setCheckingIn(true)}
         />
       )}
+      {tab === "journey" && <JourneyView session={session} />}
       {tab === "chat" && <ChatThread session={session} busy={busy} error={error} onSend={send} />}
       {tab === "memory" && <MemoryView memory={session.memory} />}
+        </>
+      )}
     </div>
   );
 }

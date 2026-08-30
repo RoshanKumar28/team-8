@@ -1,18 +1,15 @@
 "use client";
 
-/* Phone shell on desktop, bare app on an actual phone. */
+/* Rounded app canvas floating on a white page (desktop); bare app on a phone. */
 export default function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="lg:hidden">
-        <div className="flex h-dvh flex-col overflow-hidden">{children}</div>
+        <div className="flex h-dvh flex-col overflow-hidden bg-surface">{children}</div>
       </div>
-      <div className="hidden min-h-dvh place-items-center py-8 lg:grid">
-        <div className="card-pop h-[720px] w-[352px] rounded-[52px] border-[10px] border-surface bg-surface">
-          <div className="relative flex h-full w-full flex-col overflow-hidden rounded-[41px] bg-surface">
-            <div className="pointer-events-none absolute left-1/2 top-2 z-30 h-5 w-24 -translate-x-1/2 rounded-full bg-line" />
-            {children}
-          </div>
+      <div className="hidden min-h-dvh place-items-center bg-bg py-10 lg:grid">
+        <div className="card-pop relative flex h-[724px] w-[356px] flex-col overflow-hidden rounded-[40px] border border-line bg-surface">
+          {children}
         </div>
       </div>
     </>

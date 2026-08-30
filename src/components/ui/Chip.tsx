@@ -7,10 +7,10 @@ export default function Chip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-3 py-1.5 text-[13px] transition ${
+      className={`rounded-full px-3.5 py-2 text-[13px] font-medium transition ${
         selected
-          ? "card-soft border-transparent bg-brand text-brandink"
-          : "border-line bg-surface text-muted hover:border-brand hover:text-ink"
+          ? "card-soft bg-brand text-brandink"
+          : "bg-raised text-muted hover:bg-brandsoft hover:text-brand"
       }`}
     >
       {label}

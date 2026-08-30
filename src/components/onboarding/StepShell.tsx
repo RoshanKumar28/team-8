@@ -30,7 +30,7 @@ export default function StepShell({
           )}
           <div className="min-w-0">
             {eyebrow && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-brand">{eyebrow}</p>}
-            <h1 className="text-[21px] font-bold leading-tight tracking-tight text-ink">{title}</h1>
+            <h1 className="font-display text-[22px] font-semibold leading-tight text-ink">{title}</h1>
             {subtitle && <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{subtitle}</p>}
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function StepShell({
 
       <div className="scroll-thin min-h-0 flex-1 overflow-y-auto px-5 py-3">{children}</div>
 
-      <div className="shrink-0 border-t border-line bg-surface px-5 pb-6 pt-3">{footer}</div>
+      <div className="shrink-0 bg-surface px-5 pb-7 pt-3">{footer}</div>
     </div>
   );
 }

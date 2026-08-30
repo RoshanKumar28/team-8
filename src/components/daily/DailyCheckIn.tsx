@@ -18,8 +18,8 @@ export default function DailyCheckIn({
 }) {
   const [slide, setSlide] = useState<1 | 2>(1);
   const day = session.day;
-  const existingCheckIn = session.memory.checkIns.find((c) => c.day === day) ?? null;
-  const existingMeals = session.memory.meals.filter((m) => m.day === day);
+  const existingCheckIn = (session.memory.checkIns ?? []).find((c) => c.day === day) ?? null;
+  const existingMeals = (session.memory.meals ?? []).filter((m) => m.day === day);
 
   if (slide === 1) {
     return (

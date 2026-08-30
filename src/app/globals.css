@@ -5,13 +5,13 @@
    lavender + mint + butter accents. Swap hexes here to retheme.
    --------------------------------------------------------------- */
 :root {
-  --c-bg:         #fbe9ec;  /* blush */
+  --c-bg:         #ffffff;  /* white canvas */
   --c-surface:    #ffffff;
-  --c-raised:     #fdf5f4;
+  --c-raised:     #faf7f8;
   --c-ink:        #3d2e35;  /* warm cocoa */
   --c-muted:      #8f7b83;
   --c-faint:      #bfaab2;
-  --c-line:       #f6e3e6;
+  --c-line:       #f3eaee;
   --c-brand:      #e5798f;  /* rose */
   --c-brand-ink:  #ffffff;
   --c-brand-soft: #fce8ec;
@@ -27,8 +27,8 @@
   --r-md: 20px;
   --r-lg: 28px;
 
-  --shadow-card: 0 6px 24px -8px rgba(190, 120, 140, 0.18);
-  --shadow-pop:  0 12px 32px -8px rgba(190, 120, 140, 0.28);
+  --shadow-card: 0 8px 28px -10px rgba(170, 110, 135, 0.22);
+  --shadow-pop:  0 24px 60px -16px rgba(170, 110, 135, 0.30);
 }
 
 @theme inline {

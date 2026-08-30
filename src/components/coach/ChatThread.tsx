@@ -63,7 +63,7 @@ export default function ChatThread({
             }}
             rows={1}
             placeholder="Talk to your coach…"
-            className="max-h-28 flex-1 resize-none rounded-[var(--r-lg)] border border-line bg-bg px-4 py-2.5 text-[13.5px] text-ink outline-none placeholder:text-faint focus:border-brand"
+            className="max-h-28 flex-1 resize-none rounded-[var(--r-lg)] bg-raised px-4 py-3 text-[13.5px] text-ink outline-none ring-1 ring-transparent transition placeholder:text-faint focus:ring-brand"
           />
           <button
             onClick={submit}

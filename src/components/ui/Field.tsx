@@ -7,7 +7,7 @@ export function TextField({
   placeholder?: string; hint?: string; multiline?: boolean;
 }) {
   const shared =
-    "w-full rounded-[var(--r-sm)] border border-line bg-surface px-3 py-2.5 text-sm text-ink outline-none placeholder:text-faint focus:border-brand";
+    "w-full rounded-[var(--r-md)] bg-raised px-3.5 py-3 text-sm text-ink outline-none ring-1 ring-transparent transition placeholder:text-faint focus:ring-brand";
   return (
     <label className="block">
       <span className="mb-1.5 block text-[13px] font-medium text-ink">{label}</span>

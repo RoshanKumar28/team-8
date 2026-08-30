@@ -75,7 +75,7 @@ export default function QuestionStep({
           value={other}
           onChange={(e) => setOther(e.target.value)}
           placeholder="Something else? Type it here"
-          className="mt-3 w-full rounded-[var(--r-sm)] border border-line bg-surface px-3 py-2.5 text-[13px] text-ink outline-none placeholder:text-faint focus:border-brand"
+          className="mt-3 w-full rounded-[var(--r-md)] bg-raised px-3.5 py-3 text-[13px] text-ink outline-none ring-1 ring-transparent transition placeholder:text-faint focus:ring-brand"
         />
       )}
 

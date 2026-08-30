@@ -66,6 +66,7 @@ export default function ReportStep({
       <div className="space-y-3">
         <Option
           onClick={() => camRef.current?.click()}
+          tint="bg-brandsoft" fg="text-brand"
           title="Photograph a paper report"
           body="Most clinics only hand you a printout. Just point your camera at it — no scanner needed."
           badge="Most people"
@@ -73,6 +74,7 @@ export default function ReportStep({
         />
         <Option
           onClick={() => fileRef.current?.click()}
+          tint="bg-accentsoft" fg="text-accent"
           title="Upload a PDF"
           body="The file your lab emailed you."
           icon={<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12" />}
@@ -82,7 +84,7 @@ export default function ReportStep({
           <p className="rounded-[var(--r-sm)] bg-bad/10 px-3 py-2 text-[12px] text-bad">{error}</p>
         )}
 
-        <div className="rounded-[var(--r-sm)] border border-line bg-raised px-3 py-2.5">
+        <div className="rounded-[var(--r-md)] bg-goodsoft px-3.5 py-3">
           <p className="text-[12px] leading-relaxed text-muted">
             Whatever you share, I&apos;ll explain what each value means in plain words. I won&apos;t tell you
             whether you have PCOS — no app honestly can.
@@ -94,12 +96,12 @@ export default function ReportStep({
 }
 
 function Option({
-  onClick, title, body, badge, icon,
-}: { onClick: () => void; title: string; body: string; badge?: string; icon: React.ReactNode }) {
+  onClick, title, body, badge, icon, tint = "bg-brandsoft", fg = "text-brand",
+}: { onClick: () => void; title: string; body: string; badge?: string; icon: React.ReactNode; tint?: string; fg?: string }) {
   return (
     <button onClick={onClick}
-      className="card-soft flex w-full gap-3 rounded-[var(--r-md)] bg-surface p-3.5 text-left transition hover:-translate-y-0.5">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-accentsoft text-accent">
+      className={`card-soft flex w-full gap-3 rounded-[var(--r-md)] ${tint} p-4 text-left transition hover:-translate-y-0.5`}>
+      <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-surface ${fg}`}>
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
           strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
       </div>
@@ -107,7 +109,7 @@ function Option({
         <div className="flex items-center gap-2">
           <p className="text-[14px] font-semibold text-ink">{title}</p>
           {badge && (
-            <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wide text-accent">
+            <span className="rounded-full bg-surface px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-brand">
               {badge}
             </span>
           )}

@@ -53,7 +53,7 @@ export default function ReadyStep({
 
       <dl className="space-y-2.5">
         {known.filter(([, v]) => v).map(([k, v]) => (
-          <div key={k} className="rounded-[var(--r-md)] border border-line bg-surface p-3">
+          <div key={k} className="card-soft rounded-[var(--r-md)] bg-surface p-3.5">
             <dt className="text-[11px] font-semibold uppercase tracking-wider text-muted">{k}</dt>
             <dd className="mt-0.5 text-[13px] leading-relaxed text-ink">{v}</dd>
           </div>
@@ -61,7 +61,7 @@ export default function ReadyStep({
       </dl>
 
       {memory.skipped.length > 0 && (
-        <div className="mt-4 rounded-[var(--r-md)] border border-line bg-raised p-3">
+        <div className="mt-4 rounded-[var(--r-md)] bg-warnsoft p-3.5">
           <p className="text-[12px] font-semibold text-ink">You skipped {memory.skipped.length}</p>
           <p className="mt-0.5 text-[12px] leading-relaxed text-muted">
             No problem. I might ask again later if it turns out to matter — never twice.

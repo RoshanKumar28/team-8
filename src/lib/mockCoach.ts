@@ -31,7 +31,7 @@ export async function mockTurn(s: Session, userMessage: string): Promise<TurnRes
     });
     changed.push("indicator.Afternoon energy");
   } else if (n <= 2 && !m.plan) {
-    reply = `That pattern you just described — poor sleep, then cravings, then the crash — those three feed each other. Here's the honest part: ${concern.toLowerCase()} itself will take months to visibly change. But the crash and the cravings move in *days*. So that's where we start, and that's how you'll know it's working long before the mirror does.\n\nHere's your plan. Small on purpose — I'd rather you keep it than admire it.`;
+    reply = `That pattern you just described — poor sleep, then cravings, then the crash — those three feed each other. Here's the honest part: ${concern.toLowerCase()} itself will take months to visibly change. But the crash and the cravings move in *days*. So that's where we start, and that's how you'll know it's working long before the mirror does.\n\nHere's your plan — small on purpose, I'd rather you keep it than admire it. The whole road is on your Journey tab; today's piece is on Today.`;
     m.plan = {
       headline: `Steady the engine first — ${concern.toLowerCase()} follows`,
       horizon: "Week 1 of 12",
