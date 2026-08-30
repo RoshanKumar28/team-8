@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CircleHelp } from "lucide-react";
 import StepShell from "./StepShell";
 import Button from "../ui/Button";
 import Chip from "../ui/Chip";
@@ -27,6 +28,7 @@ export default function QuestionStep({
   const [showWhy, setShowWhy] = useState(false);
 
   const allowOther = question.kind === "chipsWithOther";
+  const textOnly = question.kind === "text" || question.kind === "longtext";
   const answered = picked.length > 0 || other.trim().length > 0;
 
   function toggle(opt: string) {
@@ -62,6 +64,17 @@ export default function QuestionStep({
         </div>
       )}
 
+      {textOnly && (
+        <input
+          autoFocus
+          value={other}
+          onChange={(e) => setOther(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && answered) submit(); }}
+          placeholder={question.placeholder ?? "Type here"}
+          className="w-full rounded-[var(--r-sm)] border border-line bg-surface px-3 py-2.5 text-[14px] text-ink outline-none placeholder:text-faint focus:border-brand"
+        />
+      )}
+
       <div className="flex flex-wrap gap-2">
         {question.options?.map((o) => (
           <Chip key={o} label={o} selected={picked.includes(o)} onClick={() => toggle(o)} />
@@ -80,8 +93,8 @@ export default function QuestionStep({
       )}
 
       <button onClick={() => setShowWhy((s) => !s)}
-        className="mt-4 text-[12px] font-medium text-brand underline underline-offset-2">
-        {showWhy ? "Hide" : "Why does this matter?"}
+        className="mt-4 flex items-center gap-1 text-[12px] font-medium text-brand">
+        <CircleHelp size={13} />{showWhy ? "Hide" : "Why does this matter?"}
       </button>
       {showWhy && (
         <p className="rise mt-2 rounded-[var(--r-sm)] border border-line bg-raised px-3 py-2.5 text-[12.5px] leading-relaxed text-muted">

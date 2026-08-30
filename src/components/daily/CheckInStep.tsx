@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Smile, Moon, Zap, type LucideIcon } from "lucide-react";
 import SlideShell from "./SlideShell";
 import Button from "../ui/Button";
 import Chip from "../ui/Chip";
@@ -80,7 +81,10 @@ export default function CheckInStep({
         {ROWS.map((row) => (
           <div key={row.key}>
             <div className="mb-1.5 flex items-baseline justify-between gap-2">
-              <span className="text-[13px] font-semibold text-ink">{row.label}</span>
+              <span className="flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+                {(() => { const I: LucideIcon = row.key === "mood" ? Smile : row.key === "sleep" ? Moon : Zap; return <I size={14} className="text-brand" />; })()}
+                {row.label}
+              </span>
               <span className="text-[10.5px] text-faint">{row.hint}</span>
             </div>
             <div className="flex flex-wrap gap-2">

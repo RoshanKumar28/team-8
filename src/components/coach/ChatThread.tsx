@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { SendHorizonal } from "lucide-react";
 import type { Session } from "@/lib/types";
 
 export default function ChatThread({
@@ -71,7 +72,7 @@ export default function ChatThread({
             aria-label="Send"
             className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-brandink transition disabled:opacity-40"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z" /></svg>
+            <SendHorizonal size={16} />
           </button>
         </div>
         <p className="mt-1.5 text-center text-[9.5px] text-faint">

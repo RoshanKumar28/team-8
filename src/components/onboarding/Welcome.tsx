@@ -1,11 +1,12 @@
 "use client";
 
+import { Target, BookHeart, Sparkles } from "lucide-react";
 import Button from "../ui/Button";
 
 const PROMISES = [
-  { t: "Your one thing", d: "Whichever symptom actually bothers you is what everything points at.", tint: "bg-brandsoft", dot: "bg-brand" },
-  { t: "It remembers", d: "What you promised, what you tried, which explanation made sense. Never repeat yourself.", tint: "bg-accentsoft", dot: "bg-accent" },
-  { t: "Proof in days", d: "Cycles take months. I track what moves in days, so you see it working early.", tint: "bg-goodsoft", dot: "bg-good" },
+  { t: "Your one thing", d: "Whichever symptom actually bothers you is what everything points at.", tint: "bg-brandsoft", fg: "text-brand", Icon: Target },
+  { t: "It remembers", d: "What you promised, what you tried, which explanation made sense. Never repeat yourself.", tint: "bg-accentsoft", fg: "text-accent", Icon: BookHeart },
+  { t: "Proof in days", d: "Cycles take months. I track what moves in days, so you see it working early.", tint: "bg-goodsoft", fg: "text-good", Icon: Sparkles },
 ];
 
 export default function Welcome({ onStart }: { onStart: () => void }) {
@@ -34,7 +35,9 @@ export default function Welcome({ onStart }: { onStart: () => void }) {
           {PROMISES.map((p, i) => (
             <div key={p.t} className={`rise flex items-start gap-3 rounded-[var(--r-md)] ${p.tint} p-4`}
               style={{ animationDelay: `${90 + i * 80}ms` }}>
-              <div className={`mt-1 h-2 w-2 shrink-0 rounded-full ${p.dot}`} />
+              <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full bg-surface ${p.fg}`}>
+                <p.Icon size={17} />
+              </span>
               <div>
                 <p className="text-[14px] font-bold text-ink">{p.t}</p>
                 <p className="mt-0.5 text-[12.5px] leading-relaxed text-muted">{p.d}</p>

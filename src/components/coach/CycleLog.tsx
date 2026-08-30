@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight, Droplets } from "lucide-react";
 import type { Session } from "@/lib/types";
 
 /* Period log as a uterus-shaped dot grid — one shape per month, one dot per
@@ -51,13 +52,13 @@ export default function CycleLog({
     <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-raised/60 pb-8">
       <div className="flex items-center justify-between px-5 pb-1 pt-4">
         <div>
-          <h2 className="font-display text-[18px] font-semibold text-ink">Your cycle</h2>
+          <h2 className="flex items-center gap-1.5 font-display text-[18px] font-semibold text-ink"><Droplets size={16} className="text-brand" />Your cycle</h2>
           <p className="text-[11px] text-muted">Tap the days you bled. That&apos;s the whole job.</p>
         </div>
         <div className="flex items-center gap-1.5">
-          <button onClick={() => setYear((y) => y - 1)} className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-[12px] text-muted">‹</button>
+          <button onClick={() => setYear((y) => y - 1)} className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-muted"><ChevronLeft size={14} /></button>
           <span className="font-display text-[14px] font-bold text-brand">{year}</span>
-          <button onClick={() => setYear((y) => y + 1)} className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-[12px] text-muted">›</button>
+          <button onClick={() => setYear((y) => y + 1)} className="grid h-7 w-7 place-items-center rounded-full border border-line bg-surface text-muted"><ChevronRight size={14} /></button>
         </div>
       </div>
 

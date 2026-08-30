@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { Check, X, FastForward, NotebookPen, Sparkles, TrendingUp, TrendingDown, Minus, Pencil } from "lucide-react";
+import { CloudRainWind } from "lucide-react";
 import { todaysTasks } from "@/lib/followup";
+import { flareCopy, predictFlare } from "@/lib/predict";
 import type { Session } from "@/lib/types";
 
 const REASONS = ["Schedule blew up", "No energy", "Flare / cramps", "Forgot", "Didn't feel like it"];
@@ -20,6 +23,7 @@ export default function TodayScreen({
   const concern = session.memory.profile.primaryConcern;
   const checkIn = (session.memory.checkIns ?? []).find((c) => c.day === session.day) ?? null;
   const meals = (session.memory.meals ?? []).filter((m) => m.day === session.day);
+  const prediction = predictFlare(session.memory);
 
   return (
     <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-bg">
@@ -28,7 +32,7 @@ export default function TodayScreen({
           <h2 className="font-display text-[19px] font-semibold text-ink">Day {session.day}</h2>
           <button onClick={onJumpDay}
             className="rounded-full border border-line bg-surface px-2.5 py-1 text-[10.5px] font-semibold text-muted">
-            ⏭ next day
+            <FastForward size={11} className="mr-1 inline-block align-[-1px]" />next day
           </button>
         </div>
         {concern && (
@@ -39,6 +43,18 @@ export default function TodayScreen({
       </div>
 
       <div className="space-y-2.5 px-4 pb-6">
+        {prediction && prediction.daysAway <= 10 && (() => {
+          const c = flareCopy(prediction);
+          return (
+            <div className="card-soft rise rounded-[var(--r-md)] border border-accent/40 bg-accent/10 p-3.5">
+              <div className="flex items-center gap-2">
+                <CloudRainWind size={15} className="shrink-0 text-accent" />
+                <p className="text-[12.5px] font-bold text-ink">{c.title}</p>
+              </div>
+              <p className="mt-1 text-[11.5px] leading-relaxed text-muted">{c.body}</p>
+            </div>
+          );
+        })()}
         {/* Sits above the plan on purpose — it costs 30 seconds and it is the
             only row that still makes sense on a day when nothing else does. */}
         {!checkIn ? (
@@ -46,8 +62,8 @@ export default function TodayScreen({
             onClick={onOpenCheckIn}
             className="card-soft rise flex w-full items-center gap-3 rounded-[var(--r-md)] bg-brandsoft p-3.5 text-left transition hover:opacity-90"
           >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-[15px] text-brandink">
-              ✎
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-brandink">
+              <NotebookPen size={16} />
             </span>
             <span className="min-w-0">
               <span className="block text-[13.5px] font-semibold text-ink">30-second check-in</span>
@@ -63,7 +79,7 @@ export default function TodayScreen({
           >
             <span className="flex items-baseline justify-between gap-2">
               <span className="text-[11px] font-bold uppercase tracking-wide text-good">Checked in today</span>
-              <span className="text-[11px] font-semibold text-brand">Edit</span>
+              <span className="flex items-center gap-1 text-[11px] font-semibold text-brand"><Pencil size={10} />Edit</span>
             </span>
             <span className="mt-1 block text-[12.5px] text-ink">
               {[checkIn.mood, checkIn.sleep, checkIn.energy].filter(Boolean).join(" · ")}
@@ -112,11 +128,11 @@ export default function TodayScreen({
               <div className="mt-2.5 flex gap-2">
                 <button onClick={() => onCheck(c.id, true, "")}
                   className="flex-1 rounded-full bg-good py-2 text-[12.5px] font-bold text-brandink">
-                  ✓ Did it
+                  <Check size={14} className="mr-1 inline-block align-[-2px]" />Did it
                 </button>
                 <button onClick={() => setAsking(c.id)}
                   className="flex-1 rounded-full border border-line bg-surface py-2 text-[12.5px] font-semibold text-muted">
-                  ✕ Couldn&apos;t
+                  <X size={14} className="mr-1 inline-block align-[-2px]" />Couldn&apos;t
                 </button>
               </div>
             )}
@@ -131,12 +147,12 @@ export default function TodayScreen({
 
         {session.memory.leadingIndicators.length > 0 && (
           <div className="mt-2 rounded-[var(--r-md)] bg-accentsoft p-3.5">
-            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-accent">Early signs</p>
+            <p className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-accent"><Sparkles size={12} />Early signs</p>
             {session.memory.leadingIndicators.slice(0, 3).map((l) => (
               <div key={l.name} className="flex items-baseline justify-between py-0.5 text-[12px]">
                 <span className="text-ink">{l.name}</span>
                 <span className={`font-bold ${l.trend === "improving" ? "text-good" : l.trend === "worse" ? "text-bad" : "text-faint"}`}>
-                  {l.trend === "improving" ? "▲ improving" : l.trend === "worse" ? "▼ watch" : "— steady"}
+                  {l.trend === "improving" ? <><TrendingUp size={11} className="inline align-[-1px]" /> improving</> : l.trend === "worse" ? <><TrendingDown size={11} className="inline align-[-1px]" /> watch</> : <><Minus size={11} className="inline align-[-1px]" /> steady</>}
                 </span>
               </div>
             ))}

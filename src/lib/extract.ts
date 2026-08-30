@@ -42,7 +42,7 @@ const DEMO_BLOODWORK = (sourceName: string): ExtractedReport => ({
       plainMeaning: "Low. Common, and worth raising with your doctor — it's an easy one to correct." },
   ],
   findings: [],
-  prefill: { diagnosed: "unsure" },
+  prefill: { diagnosed: "unsure", name: "Maya" },
   criteriaSignals: {
     highAndrogen: { state: "met", evidence: "Raised total testosterone on bloodwork dated 12 March" },
   },

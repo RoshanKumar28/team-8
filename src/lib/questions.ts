@@ -17,6 +17,14 @@ export type Question = {
 // what gets skipped is remembered and may be raised later in conversation.
 export const QUESTIONS: Question[] = [
   {
+    id: "name",
+    group: "Your life",
+    ask: "First — what should I call you?",
+    why: "Because 'hey there' is how apps talk. Coaches use your name.",
+    kind: "text",
+    placeholder: "Your name or a nickname",
+  },
+  {
     id: "cycleLength",
     group: "Your cycle",
     ask: "Roughly how long are your cycles?",
@@ -112,7 +120,7 @@ export const GROUP_ORDER = ["Your cycle", "Your symptoms", "Your life", "What yo
 
 const WEIGHTS: Partial<Record<keyof Profile, number>> = {
   primaryConcern: 25, symptoms: 15, cycleLength: 10, cycleRegularity: 10,
-  lastPeriod: 8, stress: 8, sleep: 7, job: 6, activity: 5, tried: 4, meds: 2,
+  lastPeriod: 8, stress: 8, sleep: 7, job: 6, activity: 5, tried: 4, meds: 2, name: 0,
 };
 
 export function completeness(p: Profile): number {

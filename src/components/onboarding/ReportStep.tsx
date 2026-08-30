@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Camera, FileUp, ScanLine, ShieldCheck } from "lucide-react";
 import StepShell from "./StepShell";
 import Button from "../ui/Button";
 import type { ExtractedReport } from "@/lib/types";
@@ -70,14 +71,14 @@ export default function ReportStep({
           title="Photograph a paper report"
           body="Most clinics only hand you a printout. Just point your camera at it — no scanner needed."
           badge="Most people"
-          icon={<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />}
+          icon={<Camera size={19} />}
         />
         <Option
           onClick={() => fileRef.current?.click()}
           tint="bg-accentsoft" fg="text-accent"
           title="Upload a PDF"
           body="The file your lab emailed you."
-          icon={<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12" />}
+          icon={<FileUp size={19} />}
         />
 
         {error && (
@@ -85,9 +86,10 @@ export default function ReportStep({
         )}
 
         <div className="rounded-[var(--r-md)] bg-goodsoft px-3.5 py-3">
-          <p className="text-[12px] leading-relaxed text-muted">
-            Whatever you share, I&apos;ll explain what each value means in plain words. I won&apos;t tell you
-            whether you have PCOS — no app honestly can.
+          <p className="flex gap-2 text-[12px] leading-relaxed text-muted">
+            <ShieldCheck size={15} className="mt-0.5 shrink-0 text-good" />
+            <span>Whatever you share, I&apos;ll explain what each value means in plain words. I won&apos;t tell you
+            whether you have PCOS — no app honestly can.</span>
           </p>
         </div>
       </div>
@@ -102,8 +104,7 @@ function Option({
     <button onClick={onClick}
       className={`card-soft flex w-full gap-3 rounded-[var(--r-md)] ${tint} p-4 text-left transition hover:-translate-y-0.5`}>
       <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-surface ${fg}`}>
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
-          strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
+        {icon}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
@@ -129,7 +130,7 @@ function Analyzing({ progress }: { progress: number }) {
       <div className="space-y-3 pt-2">
         {STAGES.map((s, i) => (
           <div key={s} className="flex items-center gap-3 pulse-soft" style={{ animationDelay: `${i * 200}ms` }}>
-            <div className="h-2 w-2 rounded-full bg-brand" />
+            <ScanLine size={13} className="text-brand" />
             <p className="text-[13px] text-muted">{s}</p>
           </div>
         ))}

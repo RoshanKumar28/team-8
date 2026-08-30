@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  Target, Sparkles, ClipboardCheck, Lightbulb, ListChecks, FlaskConical,
+  HeartPulse, UtensilsCrossed, User, CalendarHeart, type LucideIcon,
+} from "lucide-react";
 import { mealsByDay } from "@/lib/followup";
 import type { Memory } from "@/lib/types";
 
@@ -13,11 +17,14 @@ const statusStyle: Record<string, string> = {
 };
 const critLabel = { met: "Met", not_met: "Not met", unknown: "Unknown" };
 
-function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+function Section({ title, hint, icon: Icon, children }: { title: string; hint?: string; icon?: LucideIcon; children: React.ReactNode }) {
   return (
     <section className="border-b border-line px-4 py-4">
       <div className="mb-2 flex items-baseline justify-between gap-2">
-        <h2 className="font-display text-[13px] font-semibold text-ink">{title}</h2>
+        <h2 className="flex items-center gap-1.5 font-display text-[13px] font-semibold text-ink">
+          {Icon && <Icon size={14} className="text-brand" />}
+          {title}
+        </h2>
         {hint && <span className="text-[10px] text-faint">{hint}</span>}
       </div>
       {children}
@@ -32,7 +39,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
 
   return (
     <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-surface">
-      <Section title="Your priorities" hint="in your order">
+      <Section icon={Target} title="Your priorities" hint="in your order">
         {p.primaryConcern ? (
           <>
             <p className="font-display text-[19px] font-semibold text-brand">{p.primaryConcern}</p>
@@ -50,7 +57,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="Early signs it's working" hint="these move in days, not months">
+      <Section icon={Sparkles} title="Early signs it's working" hint="these move in days, not months">
         {memory.leadingIndicators.length ? (
           <ul className="space-y-2.5">
             {memory.leadingIndicators.map((l) => (
@@ -75,7 +82,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="Your daily check-ins" hint="30 seconds a day, most days">
+      <Section icon={HeartPulse} title="Your daily check-ins" hint="30 seconds a day, most days">
         {(memory.checkIns ?? []).length ? (
           <ul className="space-y-2">
             {[...(memory.checkIns ?? [])].sort((a, b) => b.day - a.day).slice(0, 7).map((c) => (
@@ -95,7 +102,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="What you've been eating" hint="shape of the plate, never calories">
+      <Section icon={UtensilsCrossed} title="What you've been eating" hint="shape of the plate, never calories">
         {(memory.meals ?? []).length ? (
           <ul className="space-y-2.5">
             {mealsByDay(memory.meals ?? []).slice(0, 4).map(({ day, meals }) => (
@@ -126,7 +133,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="What you promised">
+      <Section icon={ClipboardCheck} title="What you promised">
         {memory.commitments.length ? (
           <ul className="space-y-2">
             {memory.commitments.map((c) => (
@@ -146,7 +153,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="Explanations that landed">
+      <Section icon={Lightbulb} title="Explanations that landed">
         {memory.explanations.length ? (
           <ul className="space-y-1.5">
             {memory.explanations.map((e, i) => (
@@ -162,7 +169,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="Where you stand" hint="a checklist, never a verdict">
+      <Section icon={ListChecks} title="Where you stand" hint="a checklist, never a verdict">
         <ul className="space-y-1.5 text-[12.5px]">
           {([
             ["Irregular / absent ovulation", memory.criteria.irregularCycles],
@@ -185,7 +192,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         </p>
       </Section>
 
-      <Section title="Your reports, in plain words">
+      <Section icon={FlaskConical} title="Your reports, in plain words">
         {memory.labs.length ? (
           <ul className="space-y-2">
             {memory.labs.map((l) => (
@@ -205,7 +212,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section title="Your life" hint="context, not just symptoms">
+      <Section icon={User} title="Your life" hint="context, not just symptoms">
         <dl className="space-y-1 text-[12.5px]">
           {([["Age", p.age], ["Cycle", [p.cycleLength, p.cycleRegularity].filter(Boolean).join(" · ")],
              ["Last period", p.lastPeriod], ["Work", p.job], ["Stress", p.stress], ["Sleep", p.sleep],
@@ -222,7 +229,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
       </Section>
 
       {memory.plan && (
-        <Section title="The plan">
+        <Section icon={ClipboardCheck} title="The plan">
           <p className="font-display text-[14px] font-semibold text-brand">{memory.plan.headline}</p>
           <p className="mb-2 text-[10.5px] text-faint">{memory.plan.horizon}</p>
           <ul className="space-y-2">
@@ -241,7 +248,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
       )}
 
       {memory.sessionLog.length > 0 && (
-        <Section title="Past sessions">
+        <Section icon={CalendarHeart} title="Past sessions">
           <ul className="space-y-1.5 text-[12.5px]">
             {memory.sessionLog.map((l) => (
               <li key={l.label}>

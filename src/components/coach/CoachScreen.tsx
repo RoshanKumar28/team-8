@@ -7,6 +7,7 @@ import TodayScreen from "./TodayScreen";
 import JourneyView from "./JourneyView";
 import CycleLog from "./CycleLog";
 import DailyCheckIn from "../daily/DailyCheckIn";
+import { Sun, Map, Flower2, MessageCircleHeart, BookHeart } from "lucide-react";
 import { followUp } from "@/lib/followup";
 import type { CheckIn, MealLog, Session } from "@/lib/types";
 
@@ -147,7 +148,7 @@ export default function CoachScreen({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <header className="shrink-0 px-4 pb-3 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
+      <header className="shrink-0 px-4 pb-1 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
         <div className="flex items-center gap-3 pb-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent font-display text-[15px] font-semibold text-brandink">
             {p.name ? p.name[0].toUpperCase() : "C"}
@@ -161,23 +162,7 @@ export default function CoachScreen({
             </p>
           </div>
         </div>
-        {session.memory.plan && (
-          <nav className="flex gap-1">
-            {(["today", "journey", "cycle", "chat", "memory"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`rounded-t-[var(--r-sm)] px-3 py-2 text-[12.5px] font-semibold transition ${
-                  tab === t
-                    ? "border-b-2 border-brand text-brand"
-                    : "text-faint hover:text-muted"
-                }`}
-              >
-                {t === "today" ? "Today" : t === "journey" ? "Journey" : t === "cycle" ? "Cycle" : t === "chat" ? "Coach" : "Memory"}
-              </button>
-            ))}
-          </nav>
-        )}
+
       </header>
 
       {!session.memory.plan ? (
@@ -196,8 +181,37 @@ export default function CoachScreen({
       {tab === "cycle" && <CycleLog session={session} onToggle={togglePeriod} />}
       {tab === "chat" && <ChatThread session={session} busy={busy} error={error} onSend={send} />}
       {tab === "memory" && <MemoryView memory={session.memory} />}
+
+      <nav className="shrink-0 border-t border-line bg-surface px-2 pb-4 pt-1.5">
+        <div className="flex">
+          {TABS.map(({ id, label, Icon }) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              className="flex flex-1 flex-col items-center gap-0.5 py-1"
+            >
+              <span className={`grid h-8 w-14 place-items-center rounded-full transition ${
+                tab === id ? "bg-brandsoft text-brand" : "text-faint"
+              }`}>
+                <Icon size={19} strokeWidth={tab === id ? 2.4 : 1.9} />
+              </span>
+              <span className={`text-[9.5px] font-bold ${tab === id ? "text-brand" : "text-faint"}`}>
+                {label}
+              </span>
+            </button>
+          ))}
+        </div>
+      </nav>
         </>
       )}
     </div>
   );
 }
+
+const TABS = [
+  { id: "today", label: "Today", Icon: Sun },
+  { id: "journey", label: "Journey", Icon: Map },
+  { id: "cycle", label: "Cycle", Icon: Flower2 },
+  { id: "chat", label: "Coach", Icon: MessageCircleHeart },
+  { id: "memory", label: "Memory", Icon: BookHeart },
+] as const;

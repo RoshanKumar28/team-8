@@ -1,5 +1,7 @@
 "use client";
 
+import { X } from "lucide-react";
+
 /* Same frame as the onboarding StepShell, but for slides that open *inside* the
    coach — no top progress bar competing with the tab header, and a dismiss
    affordance, because every one of these is skippable by design. */
@@ -30,9 +32,9 @@ export default function SlideShell({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="-mr-1 text-[11.5px] font-semibold text-faint transition hover:text-ink"
+            className="-mr-1 flex items-center gap-1 text-[11.5px] font-semibold text-faint transition hover:text-ink"
           >
-            Not now
+            Not now <X size={13} />
           </button>
         </div>
 
@@ -40,7 +42,7 @@ export default function SlideShell({
           {eyebrow && (
             <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-brand">{eyebrow}</p>
           )}
-          <h1 className="text-[21px] font-bold leading-tight tracking-tight text-ink">{title}</h1>
+          <h1 className="font-display text-[21px] font-semibold leading-tight text-ink">{title}</h1>
           {subtitle && <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{subtitle}</p>}
         </div>
       </div>

@@ -31,7 +31,7 @@ export const seededSession = (): Session => ({
     },
     // Four days of check-ins and meals: enough for the Memory tab to have
     // something to show, and enough for the carb-crash rule to fire on open.
-    periodDates: ["2026-07-04","2026-07-05","2026-07-06","2026-07-07","2026-08-17","2026-08-18","2026-08-19"],
+    periodDates: ["2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-07-15", "2026-07-16", "2026-07-17"],
     checkIns: [
       { day: 21, mood: "Fine", sleep: "Short but okay", energy: "Patchy", note: "", ts: 21 },
       { day: 22, mood: "Good", sleep: "Slept well", energy: "Steady", note: "Walked after lunch, felt it by evening.", ts: 22 },

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft } from "lucide-react";
 import Progress from "../ui/Progress";
 
 /* Every onboarding step gets the same frame: scrollable body, pinned footer.
@@ -23,9 +24,7 @@ export default function StepShell({
           {onBack && (
             <button onClick={onBack} aria-label="Back"
               className="-ml-1 mt-0.5 shrink-0 text-muted transition hover:text-ink">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <ChevronLeft size={20} />
             </button>
           )}
           <div className="min-w-0">

@@ -1,5 +1,6 @@
 "use client";
 
+import { Sparkles } from "lucide-react";
 import StepShell from "./StepShell";
 import Button from "../ui/Button";
 import Progress from "../ui/Progress";
@@ -40,7 +41,7 @@ export default function ReadyStep({
     >
       <div className="mb-4">
         <div className="mb-1.5 flex items-baseline justify-between">
-          <span className="text-[12px] font-medium text-ink">How well I know you</span>
+          <span className="flex items-center gap-1.5 text-[12px] font-medium text-ink"><Sparkles size={13} className="text-brand" />How well I know you</span>
           <span className="text-[12px] font-bold text-brand">{score}%</span>
         </div>
         <Progress value={score} />
