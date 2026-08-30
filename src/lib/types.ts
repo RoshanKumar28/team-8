@@ -98,6 +98,38 @@ export type MealLog = {
   ts: number;
 };
 
+/* Clue/Flo-style day log — flow plus whatever her body is doing that day.
+   Everything optional; a flow tap alone is a complete log. */
+export type Flow = "spotting" | "light" | "medium" | "heavy";
+
+export type CycleDayLog = {
+  date: string;            // ISO yyyy-mm-dd
+  flow: Flow | null;       // null = logged the day but no bleeding
+  pain: string[];
+  body: string[];
+  ts: number;
+};
+
+export type MedKind = "medication" | "supplement";
+export type MedTiming = "morning" | "afternoon" | "evening";
+
+export type Medication = {
+  id: string;
+  name: string;
+  dose: string;            // "500mg", "2 tsp" — her words
+  kind: MedKind;
+  timings: MedTiming[];
+  remind: boolean;
+};
+
+/* One row per med per timing per day — adherence history the coach can read. */
+export type MedTake = {
+  day: number;
+  medId: string;
+  timing: MedTiming;
+  ts: number;
+};
+
 export type Explanation = { concept: string; framing: string; landed: boolean };
 export type PlanWeek = { label: string; forPrimary: string; tasks: string[]; checkpoint: string };
 export type Plan = { headline: string; horizon: string; weeks: PlanWeek[] };
@@ -107,6 +139,9 @@ export type Memory = {
   checkIns: CheckIn[];
   meals: MealLog[];
   periodDates: string[];   // ISO yyyy-mm-dd, tap-logged on the cycle grid
+  cycleLogs: CycleDayLog[];
+  medications: Medication[];
+  medTakes: MedTake[];
   profile: Profile;
   labs: Lab[];
   reports: { name: string; kind: string; takenOn: string }[];
@@ -152,6 +187,9 @@ export const emptyMemory = (): Memory => ({
   checkIns: [],
   meals: [],
   periodDates: [],
+  cycleLogs: [],
+  medications: [],
+  medTakes: [],
   profile: emptyProfile(),
   labs: [],
   reports: [],

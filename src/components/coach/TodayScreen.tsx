@@ -60,9 +60,9 @@ export default function TodayScreen({
         {!checkIn ? (
           <button
             onClick={onOpenCheckIn}
-            className="card-soft rise flex w-full items-center gap-3 rounded-[var(--r-md)] bg-brandsoft p-3.5 text-left transition hover:opacity-90"
+            className="card-soft pop-spring flex w-full items-center gap-3 rounded-[var(--r-md)] bg-brandsoft p-3.5 text-left transition hover:opacity-90"
           >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-brandink">
+            <span className="wave grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-brandink">
               <NotebookPen size={16} />
             </span>
             <span className="min-w-0">

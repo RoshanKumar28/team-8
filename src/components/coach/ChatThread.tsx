@@ -29,7 +29,7 @@ export default function ChatThread({
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="scroll-thin min-h-0 flex-1 space-y-2.5 overflow-y-auto bg-bg px-4 py-4">
         {session.transcript.map((t, i) => (
-          <div key={i} className={`rise flex ${t.role === "user" ? "justify-end" : "justify-start"}`}>
+          <div key={i} className={`pop-spring flex ${t.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
               className={`max-w-[84%] whitespace-pre-wrap rounded-[var(--r-lg)] px-4 py-2.5 text-[13.5px] leading-relaxed shadow-sm ${
                 t.role === "user"

@@ -83,9 +83,10 @@ export default function MoodOrbs({
           >
             <span
               className={`relative grid aspect-square w-full max-w-[52px] place-items-center rounded-full transition-transform duration-200 ${
-                sel ? "scale-110" : "group-active:scale-95"
+                sel ? "wobble" : "floaty group-active:scale-95"
               }`}
               style={{
+                animationDelay: sel ? "0s" : `${ORBS.indexOf(o) * 0.35}s`,
                 background: `radial-gradient(circle at 38% 30%, #ffffffcc 0%, ${o.core} 42%, ${o.core} 100%)`,
                 boxShadow: sel
                   ? `0 0 0 2.5px var(--c-surface), 0 0 0 4.5px ${o.core}, 0 6px 22px ${o.glow}, 0 0 26px ${o.glow}`

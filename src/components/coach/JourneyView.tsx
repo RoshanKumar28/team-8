@@ -209,7 +209,7 @@ export default function JourneyView({ session }: { session: Session }) {
         <div className="sticky top-0 z-20 border-b border-line bg-surface/90 px-5 py-3 backdrop-blur">
           <h2 className="font-display text-[16px] font-semibold leading-tight text-ink">{plan.headline}</h2>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted">
-            <span className="rounded-full bg-brandsoft px-2 py-0.5 font-bold text-brand">{fmtLong(today)}</span>
+            <span className="shimmer-bar rounded-full bg-brandsoft px-2 py-0.5 font-bold text-brand">{fmtLong(today)}</span>
             <span>Week {curWeek} of {planWeeks}</span>
             <span className="flex items-center gap-1 text-good"><Check size={11} /> {doneDays} day{doneDays === 1 ? "" : "s"} showed up</span>
           </div>
@@ -228,7 +228,7 @@ export default function JourneyView({ session }: { session: Session }) {
             return (
               <div key={week} className="relative">
                 {/* faint stencil behind the road */}
-                <Stencil className="pointer-events-none absolute top-24 text-brand"
+                <Stencil className="floaty pointer-events-none absolute top-24 text-brand"
                   style={{ opacity: 0.07, width: 110, height: 110, [wi % 2 ? "left" : "right"]: -18 } as React.CSSProperties} />
 
                 {/* week banner */}
@@ -288,7 +288,8 @@ export default function JourneyView({ session }: { session: Session }) {
                       : "bg-surface border-line text-faint";
 
                     return (
-                      <div key={d} ref={st === "today" ? todayRef : undefined} className="relative h-[54px]">
+                      <div key={d} ref={st === "today" ? todayRef : undefined}
+                        className="pop-spring relative h-[54px]" style={{ animationDelay: `${di * 45}ms` }}>
                         {di < 6 && [0.35, 0.7].map((f) => (
                           <span key={f} className="absolute top-1/2 h-1 w-1 rounded-full bg-brand/25"
                             style={{ left: `calc(50% + ${x + (nx - x) * f}px)`, transform: `translateY(${18 + f * 18}px)` }} />
