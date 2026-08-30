@@ -119,7 +119,7 @@ export default function CoachScreen({
     void fetch("/api/whatsapp/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: msg }),
+      body: JSON.stringify({ text: fu.text }),
     }).catch(() => {});
   }
 
@@ -245,7 +245,24 @@ export default function CoachScreen({
   return (
     <div className="relative flex h-full min-h-0 flex-col">
       <CoachToast onOpen={() => { setTab("chat"); setUnread(false); }} />
-      <header className="shrink-0 px-4 pb-1 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
+      {dayLogDate && (
+        <DayLogSheet
+          date={dayLogDate}
+          existing={(session.memory.cycleLogs ?? []).find((l) => l.date === dayLogDate) ?? null}
+          onSave={saveDayLog}
+          onClose={() => setDayLogDate(null)}
+        />
+      )}
+      {managingMeds && (
+        <MedsManager
+          meds={session.memory.medications}
+          onAdd={addMed}
+          onRemove={removeMed}
+          onToggleRemind={toggleRemind}
+          onClose={() => setManagingMeds(false)}
+        />
+      )}
+      <header className="shrink-0 px-4 pb-1 pt-5" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
         <div className="flex items-center gap-3 pb-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-surface shadow-sm"><OvyFlower size={26} /></div>
           <div className="min-w-0 flex-1">

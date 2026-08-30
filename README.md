@@ -122,6 +122,13 @@ The 10 features the product is built around — each with its one-line promise, 
 
 Next.js 16 (App Router) · TypeScript · Tailwind v4 · GLM 5.3 Flash via Vercel AI Gateway (providers: zai/novita/gmicloud) · localStorage memory (stateless API) · deterministic safety + follow-up rules independent of the model
 
+## Deploy (Vercel)
+
+1. Import `RoshanKumar28/team-8` at vercel.com/new (framework auto-detects Next.js; no config needed).
+2. Add the env vars from `.env.example` in Project → Settings → Environment Variables. Keep `MOCK_AI=1` for a demo-safe deploy; delete it to go live on GLM.
+3. Deploy. HTTPS comes free — required for camera capture on phones.
+4. Post-deploy check: open `/api/health` — `ok: true` means the model path works.
+
 ## Run it
 
 ```bash

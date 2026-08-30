@@ -32,7 +32,7 @@ export default function TodayScreen({
 
   return (
     <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-bg">
-      <div className="px-4 pb-2 pt-4">
+      <div className="px-4 pb-2 pt-1">
         <div className="flex items-baseline justify-between">
           <h2 className="font-display text-[19px] font-semibold text-ink">Day {session.day}</h2>
           <button onClick={onJumpDay}
