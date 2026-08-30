@@ -16,6 +16,25 @@ A PCOS coach for **one person and one goal**:
 - **It follows up first.** The coach opens the conversation — missed yesterday, gone quiet, same excuse twice → scope cut, never guilt.
 - **Checklist, never a verdict.** Shows where she stands against the Rotterdam criteria and exactly what's missing — so one doctor visit does the work of five. It never diagnoses, never prescribes.
 
+## Core feature set (product brief)
+
+The 10 features the product is built around — each with its one-line promise, tied to the two brand pillars (**Knowledge + Support**). Status: ✅ built · 🟡 partial · ❌ planned.
+
+| # | Feature | Promise | Status |
+|---|---------|---------|--------|
+| 1 | **Rant diary with voice** | *"Say it out loud. We'll listen."* One-tap voice → private transcript, auto-tagged to cycle phase. No prompts, no forced positivity. | ❌ |
+| 2 | **Symptom-specific info feed** | *"Information that actually applies to you."* Content filtered by her logged symptom cluster — sourced, dated, plain language. | ❌ (interim: coach pushes one relevant explainer in chat) |
+| 3 | **Name personalization everywhere** | *"This isn't a generic app. It's yours."* Captured once at onboarding, used naturally in every greeting, check-in, and report. | ❌ (name not yet asked at onboarding) |
+| 4 | **Proactive check-ins** | *"We check on you. Not the other way around."* App reaches out after quiet days or a rough entry — warm, never guilt. | ✅ (7 deterministic follow-up rules, coach speaks first) |
+| 5 | **Symptom-to-cause pattern mapping** | *"Find out what's actually triggering your symptoms."* Correlates her symptoms against her food/sleep/stress. Observations, never diagnoses — with pattern strength shown ("seen 4× in 2 months"). | 🟡 (meal→energy and low-energy-streak patterns live; full correlation engine planned) |
+| 7 | **Cycle + symptom dual tracker** | *"Built for irregular cycles — because that's the reality of PCOS."* Two independent logs, layered on one dashboard; never assumes 28 days. | 🟡 (symptom/check-in log live; period start/end logging planned) |
+| 9 | **Medication & supplement log + reminders** | *"Remembering to take it is half the battle. We've got that half."* Dose, schedule, gentle reminders, adherence history. | 🟡 (meds captured at onboarding; dedicated rows + reminders planned) |
+| 12 | **Mood-cycle correlation view** | *"Your mood isn't random. Let's see the pattern."* Mood plotted against cycle day — heat-map style, with a plain note when a pattern emerges. Turns "am I overreacting?" into "it's hormonal, not a character flaw." | ❌ |
+| 15 | **Recipe & meal suggestions by symptom** | *"Meals that work with your body, not against it."* Recipes tagged by phenotype, each with a one-line sourced "why this helps." | ❌ (meal *logging* is live; suggestions planned) |
+| 19 | **Flare-up predictor** | *"Know it's coming before it hits."* After 3+ logged cycles: "flare-ups have happened here in 3 of your last 4 cycles" — probability framing, paired with an action. | ❌ (needs #5 + #7 data) |
+
+**Build order rationale:** 4 → 5 → 7 are the data spine (built/partial). 1, 3, 12 are the highest emotion-per-effort next. 2, 15, 19 sit on top of the spine and come last.
+
 ## Feature status
 
 ✅ done · 🟡 partial · ❌ planned
@@ -90,7 +109,7 @@ A PCOS coach for **one person and one goal**:
 ### Demo & infra
 - ✅ Seeded week-4 persona (Maya) — full memory, one tap
 - ✅ Restart / Week-4 demo buttons
-- ✅ Brand system — terracotta/saffron/ivory/sage/espresso, Fraunces + Manrope, fully tokenized in `globals.css`
+- ✅ Brand system — pastel (blush/rose/lavender/mint/butter on white), Fraunces + Manrope, fully tokenized in `globals.css`
 - ✅ Phone frame on desktop, bare app on real phones
 - ✅ `/api/health` — model JSON-reliability go/no-go
 - ❌ Home/dashboard ("Good afternoon, Maya")

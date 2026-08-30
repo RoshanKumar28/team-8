@@ -29,6 +29,7 @@ function migrate(raw: Partial<Session>): Session {
       checks: m.checks ?? [],
       checkIns: m.checkIns ?? [],
       meals: m.meals ?? [],
+      periodDates: m.periodDates ?? [],
       commitments: m.commitments ?? [],
       explanations: m.explanations ?? [],
       sessionLog: m.sessionLog ?? [],

@@ -15,10 +15,20 @@ export async function mockTurn(s: Session, userMessage: string): Promise<TurnRes
 
   if (n === 0 && !m.profile.primaryConcern) {
     // Her first message names the focus — capture it, don't make her pick from a form.
-    const guess = m.profile.symptoms.find((x) =>
-      userMessage.toLowerCase().includes(x.toLowerCase().split(" ")[0])
-    ) ?? userMessage.replace(/^(i think |probably |my |the |it'?s )/i, "").split(/[,.]/)[0].trim();
-    m.profile.primaryConcern = guess.length > 2 && guess.length < 60 ? guess : "what you just described";
+    const fromSymptoms = m.profile.symptoms.find((x) =>
+      userMessage.toLowerCase().includes(x.toLowerCase().split(" ")[0].replace(/[^a-z]/g, ""))
+    );
+    const KNOWN = ["hair fall","hair loss","hair","acne","skin","weight","cycle","period","energy","fatigue","mood","conceive","fertility","cravings","bloating","facial hair"];
+    const fromKnown = KNOWN.find((k) => userMessage.toLowerCase().includes(k));
+    const guess = fromSymptoms ?? fromKnown ?? "";
+    if (!guess) {
+      // Don't guess a junk word — ask once more, with options in her own list.
+      const opts = m.profile.symptoms.length ? m.profile.symptoms.slice(0, 4).join(", ") : "hair, skin, weight, cycles, energy";
+      const ts0 = Date.now();
+      s.transcript.push({ role: "user", text: userMessage, ts: ts0 }, { role: "coach", text: `Got it. Say it in a word or two for me — ${opts.toLowerCase()}? Whichever one you'd fix first if you could only fix one.`, ts: ts0 + 1 });
+      return { reply: "", memory: m, phase: s.phase, changed: [], redFlag: { triggered: false, reason: "", action: "" }, suggestedTests: [] };
+    }
+    m.profile.primaryConcern = guess;
     m.profile.concerns = [m.profile.primaryConcern];
     m.profile.primaryConcernWhy = userMessage.slice(0, 160);
     changed.push("profile.primaryConcern");

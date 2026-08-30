@@ -5,6 +5,7 @@ import ChatThread from "./ChatThread";
 import MemoryView from "./MemoryView";
 import TodayScreen from "./TodayScreen";
 import JourneyView from "./JourneyView";
+import CycleLog from "./CycleLog";
 import DailyCheckIn from "../daily/DailyCheckIn";
 import { followUp } from "@/lib/followup";
 import type { CheckIn, MealLog, Session } from "@/lib/types";
@@ -29,7 +30,7 @@ export default function CoachScreen({
   session: Session;
   onUpdate: (s: Session) => void;
 }) {
-  const [tab, setTab] = useState<"today" | "journey" | "chat" | "memory">(session.memory.plan ? "today" : "chat");
+  const [tab, setTab] = useState<"today" | "journey" | "cycle" | "chat" | "memory">(session.memory.plan ? "today" : "chat");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [checkingIn, setCheckingIn] = useState(false);
@@ -84,6 +85,14 @@ export default function CoachScreen({
     (next.memory.meals ??= []).push(
       ...meals.map((m) => ({ ...m, id: Math.random().toString(36).slice(2, 8), ts: Date.now() })),
     );
+    onUpdate(next);
+  }
+
+  function togglePeriod(date: string) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    const set = new Set(next.memory.periodDates ?? []);
+    if (set.has(date)) set.delete(date); else set.add(date);
+    next.memory.periodDates = [...set].sort();
     onUpdate(next);
   }
 
@@ -154,7 +163,7 @@ export default function CoachScreen({
         </div>
         {session.memory.plan && (
           <nav className="flex gap-1">
-            {(["today", "journey", "chat", "memory"] as const).map((t) => (
+            {(["today", "journey", "cycle", "chat", "memory"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -164,7 +173,7 @@ export default function CoachScreen({
                     : "text-faint hover:text-muted"
                 }`}
               >
-                {t === "today" ? "Today" : t === "journey" ? "Journey" : t === "chat" ? "Coach" : "Memory"}
+                {t === "today" ? "Today" : t === "journey" ? "Journey" : t === "cycle" ? "Cycle" : t === "chat" ? "Coach" : "Memory"}
               </button>
             ))}
           </nav>
@@ -184,6 +193,7 @@ export default function CoachScreen({
         />
       )}
       {tab === "journey" && <JourneyView session={session} />}
+      {tab === "cycle" && <CycleLog session={session} onToggle={togglePeriod} />}
       {tab === "chat" && <ChatThread session={session} busy={busy} error={error} onSend={send} />}
       {tab === "memory" && <MemoryView memory={session.memory} />}
         </>

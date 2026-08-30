@@ -106,6 +106,7 @@ export type Memory = {
   checks: TaskCheck[];
   checkIns: CheckIn[];
   meals: MealLog[];
+  periodDates: string[];   // ISO yyyy-mm-dd, tap-logged on the cycle grid
   profile: Profile;
   labs: Lab[];
   reports: { name: string; kind: string; takenOn: string }[];
@@ -150,6 +151,7 @@ export const emptyMemory = (): Memory => ({
   checks: [],
   checkIns: [],
   meals: [],
+  periodDates: [],
   profile: emptyProfile(),
   labs: [],
   reports: [],
