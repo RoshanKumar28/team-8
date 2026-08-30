@@ -56,7 +56,7 @@ export default function MedsManager({
         {meds.length > 0 && (
           <div className="mb-5 space-y-2">
             {meds.map((m) => (
-              <div key={m.id} className="card-soft flex items-center gap-2.5 rounded-[var(--r-md)] bg-surface p-3">
+              <div key={m.id} className="card-soft pop-spring flex items-center gap-2.5 rounded-[var(--r-md)] bg-surface p-3">
                 <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${m.kind === "medication" ? "bg-brandsoft text-brand" : "bg-goodsoft text-good"}`}>
                   {m.kind === "medication" ? <Pill size={15} /> : <Leaf size={15} />}
                 </span>
@@ -123,7 +123,7 @@ export default function MedsManager({
         </div>
 
         <button onClick={add} disabled={!name.trim() || timings.length === 0}
-          className="card-soft mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-brand py-3 text-[13.5px] font-bold text-brandink transition disabled:opacity-40">
+          className="card-soft pop-spring mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-brand py-3 text-[13.5px] font-bold text-brandink transition disabled:opacity-40">
           <Plus size={15} /> Add
         </button>
       </div>

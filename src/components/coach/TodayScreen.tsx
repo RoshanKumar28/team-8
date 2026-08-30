@@ -120,39 +120,54 @@ export default function TodayScreen({
           </div>
         )}
 
-        {tasks.map(({ commitment: c, check }) => (
-          <div key={c.id} className={`card-soft rise rounded-[var(--r-md)] bg-surface p-3.5 ${check && !check.done ? "opacity-80" : ""}`}>
-            <p className={`text-[13.5px] leading-snug ${check?.done ? "text-faint line-through" : "text-ink"}`}>
-              {c.text}
-            </p>
-
-            {check ? (
-              <p className={`mt-1.5 text-[11.5px] font-semibold ${check.done ? "text-good" : "text-warn"}`}>
-                {check.done ? "Done — logged." : `Skipped — "${check.reason}". No guilt, it's data.`}
+        {tasks.map(({ commitment: c, check }, ti) => (
+          <div key={c.id}
+            className={`card-soft pop-spring rounded-[var(--r-md)] bg-surface p-3 transition ${check && !check.done ? "opacity-75" : ""}`}
+            style={{ animationDelay: `${ti * 70}ms` }}>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => !check && onCheck(c.id, true, "")}
+                disabled={!!check}
+                aria-label={check?.done ? "Done" : "Mark done"}
+                className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 transition-all duration-200 ${
+                  check?.done
+                    ? "wobble border-good bg-good text-brandink"
+                    : check
+                    ? "border-line bg-raised text-faint"
+                    : "border-brand/40 bg-surface text-transparent hover:border-brand active:scale-90"
+                }`}
+              >
+                {check && !check.done ? <X size={15} /> : <Check size={16} strokeWidth={3} />}
+              </button>
+              <p className={`min-w-0 flex-1 text-[13.5px] leading-snug transition-all duration-300 ${
+                check?.done ? "text-faint line-through" : "text-ink"
+              }`}>
+                {c.text}
               </p>
-            ) : asking === c.id ? (
-              <div className="mt-2.5">
-                <p className="mb-1.5 text-[11.5px] font-medium text-muted">What got in the way? One tap — this is how I learn your life.</p>
+              {!check && (
+                <button onClick={() => setAsking(asking === c.id ? null : c.id)}
+                  className="shrink-0 text-[11px] font-semibold text-faint underline underline-offset-2 hover:text-muted">
+                  couldn&apos;t?
+                </button>
+              )}
+            </div>
+
+            {check && !check.done && check.reason && (
+              <p className="mt-1.5 pl-12 text-[11px] italic text-warn">“{check.reason}” — no guilt, it&apos;s data.</p>
+            )}
+
+            {asking === c.id && !check && (
+              <div className="rise mt-2.5 pl-12">
+                <p className="mb-1.5 text-[11px] font-medium text-muted">What got in the way?</p>
                 <div className="flex flex-wrap gap-1.5">
                   {REASONS.map((r) => (
                     <button key={r}
                       onClick={() => { onCheck(c.id, false, r); setAsking(null); }}
-                      className="rounded-full border border-line bg-bg px-2.5 py-1 text-[11.5px] text-muted transition hover:border-brand hover:text-ink">
+                      className="rounded-full border border-line bg-bg px-2.5 py-1 text-[11px] text-muted transition hover:border-brand hover:text-ink">
                       {r}
                     </button>
                   ))}
                 </div>
-              </div>
-            ) : (
-              <div className="mt-2.5 flex gap-2">
-                <button onClick={() => onCheck(c.id, true, "")}
-                  className="flex-1 rounded-full bg-good py-2 text-[12.5px] font-bold text-brandink">
-                  <Check size={14} className="mr-1 inline-block align-[-2px]" />Did it
-                </button>
-                <button onClick={() => setAsking(c.id)}
-                  className="flex-1 rounded-full border border-line bg-surface py-2 text-[12.5px] font-semibold text-muted">
-                  <X size={14} className="mr-1 inline-block align-[-2px]" />Couldn&apos;t
-                </button>
               </div>
             )}
           </div>

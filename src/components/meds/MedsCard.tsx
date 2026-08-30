@@ -25,7 +25,7 @@ export default function MedsCard({
   if (meds.length === 0) {
     return (
       <button onClick={onManage}
-        className="card-soft rise flex w-full items-center gap-3 rounded-[var(--r-md)] bg-accentsoft p-3.5 text-left transition hover:opacity-90">
+        className="card-soft pop-spring flex w-full items-center gap-3 rounded-[var(--r-md)] bg-accentsoft p-3.5 text-left transition hover:opacity-90">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-brandink">
           <Pill size={16} />
         </span>
@@ -41,7 +41,7 @@ export default function MedsCard({
   }
 
   return (
-    <div className="card-soft rise rounded-[var(--r-md)] bg-surface p-3.5">
+    <div className="card-soft pop-spring rounded-[var(--r-md)] bg-surface p-3.5">
       <div className="flex items-center justify-between gap-2">
         <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-accent">
           <Pill size={13} /> Meds & supplements
@@ -56,7 +56,7 @@ export default function MedsCard({
 
       <div className="mt-2.5 space-y-1.5">
         {meds.map((m) => (
-          <div key={m.id} className="flex items-center gap-2.5">
+          <div key={m.id} className="pop-spring flex items-center gap-2.5" style={{ animationDelay: `${meds.indexOf(m) * 60}ms` }}>
             <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${m.kind === "medication" ? "bg-brandsoft text-brand" : "bg-goodsoft text-good"}`}>
               {m.kind === "medication" ? <Pill size={14} /> : <Leaf size={14} />}
             </span>
@@ -78,7 +78,7 @@ export default function MedsCard({
                     key={t}
                     onClick={() => onTake(m.id, t)}
                     className={`flex h-8 min-w-[42px] items-center justify-center gap-1 rounded-full px-2 text-[10.5px] font-bold transition ${
-                      done ? "card-soft bg-good text-brandink" : "bg-raised text-muted hover:bg-goodsoft hover:text-good"
+                      done ? "wobble card-soft bg-good text-brandink" : "bg-raised text-muted hover:bg-goodsoft hover:text-good"
                     }`}
                   >
                     {done ? <Check size={11} /> : null}
