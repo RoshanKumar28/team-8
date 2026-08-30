@@ -23,7 +23,7 @@ let sectionIndex = 0;
 function Section({ title, hint, icon: Icon, children }: { title: string; hint?: string; icon?: LucideIcon; children: React.ReactNode }) {
   const delay = (sectionIndex++ % 9) * 60;
   return (
-    <section className="pop-spring border-b border-line px-4 py-4" style={{ animationDelay: `${delay}ms` }}>
+    <section className="pop-spring mx-3 mt-2.5 rounded-[var(--r-md)] border border-line/70 bg-surface/90 px-4 py-4 backdrop-blur-[2px] card-soft" style={{ animationDelay: `${delay}ms` }}>
       <div className="mb-2 flex items-baseline justify-between gap-2">
         <h2 className="flex items-center gap-1.5 font-display text-[13px] font-semibold text-ink">
           {Icon && <Icon size={14} className="text-brand" />}
@@ -42,7 +42,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
   const p = memory.profile;
 
   return (
-    <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-surface">
+    <div className="app-bg scroll-thin min-h-0 flex-1 overflow-y-auto">
       <Section icon={Target} title="Your priorities" hint="in your order">
         {p.primaryConcern ? (
           <>

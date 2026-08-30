@@ -55,7 +55,7 @@ export default function CycleLog({
   }, [logged]);
 
   return (
-    <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-raised/60 pb-8">
+    <div className="app-bg scroll-thin min-h-0 flex-1 overflow-y-auto pb-8">
       <div className="flex items-center justify-between px-5 pb-1 pt-4">
         <div>
           <h2 className="flex items-center gap-1.5 font-display text-[18px] font-semibold text-ink"><Droplets size={16} className="text-brand" />Your cycle</h2>
