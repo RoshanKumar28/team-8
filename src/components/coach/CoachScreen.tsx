@@ -10,6 +10,8 @@ import { OvyFlower } from "../ui/Logo";
 import DailyCheckIn from "../daily/DailyCheckIn";
 import { Sun, Map, Flower2, MessageCircleHeart, BookHeart } from "lucide-react";
 import { followUp } from "@/lib/followup";
+import { askPermission, notifyCoach } from "@/lib/notify";
+import CoachToast from "../ui/CoachToast";
 import type { CheckIn, MealLog, Session } from "@/lib/types";
 
 /* Opening line is built from the onboarding data — the first thing she sees
@@ -36,6 +38,7 @@ export default function CoachScreen({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [checkingIn, setCheckingIn] = useState(false);
+  const [unread, setUnread] = useState(false);
 
   useEffect(() => {
     if (session.transcript.length === 0) {
@@ -49,6 +52,25 @@ export default function CoachScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Ask once, in context — right when there is finally a coach worth hearing from.
+  useEffect(() => {
+    if (session.memory.plan) void askPermission();
+  }, [session.memory.plan]);
+
+  // The coach reaches out on her own after a quiet stretch — this is the
+  // "it messages you first" beat, live, with no button press.
+  useEffect(() => {
+    if (!session.memory.plan) return;
+    const t = setTimeout(() => {
+      const next: Session = JSON.parse(JSON.stringify(session));
+      next.day += 1;
+      onUpdate(next);
+      setTimeout(() => ping(next), 300);
+    }, 50_000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session.memory.plan, session.transcript.length, session.day]);
+
   // The coach speaks first when the rules say there's something to say.
   function ping(s: Session) {
     const msg = followUp(s);
@@ -58,7 +80,9 @@ export default function CoachScreen({
       lastCoachPingDay: s.day,
       transcript: [...s.transcript, { role: "coach", text: msg, ts: Date.now() }],
     });
-    setTab("chat");
+    const name = s.memory.profile.name;
+    notifyCoach(name ? `ovy → ${name}` : "ovy", msg, () => { setTab("chat"); setUnread(false); });
+    setUnread(true);
   }
 
   function check(commitmentId: string, done: boolean, reason: string) {
@@ -148,7 +172,8 @@ export default function CoachScreen({
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div className="relative flex h-full min-h-0 flex-col">
+      <CoachToast onOpen={() => { setTab("chat"); setUnread(false); }} />
       <header className="shrink-0 px-4 pb-1 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
         <div className="flex items-center gap-3 pb-3">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-surface shadow-sm"><OvyFlower size={26} /></div>
@@ -186,13 +211,16 @@ export default function CoachScreen({
           {TABS.map(({ id, label, Icon }) => (
             <button
               key={id}
-              onClick={() => setTab(id)}
+              onClick={() => { setTab(id); if (id === "chat") setUnread(false); }}
               className="flex flex-1 flex-col items-center gap-0.5 py-1"
             >
-              <span className={`grid h-8 w-14 place-items-center rounded-full transition ${
+              <span className={`relative grid h-8 w-14 place-items-center rounded-full transition ${
                 tab === id ? "bg-brandsoft text-brand" : "text-faint"
               }`}>
                 <Icon size={19} strokeWidth={tab === id ? 2.4 : 1.9} />
+                {id === "chat" && unread && tab !== "chat" && (
+                  <span className="absolute right-3 top-0.5 h-2 w-2 rounded-full bg-brand" />
+                )}
               </span>
               <span className={`text-[9.5px] font-bold ${tab === id ? "text-brand" : "text-faint"}`}>
                 {label}
