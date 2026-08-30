@@ -1,59 +1,75 @@
 "use client";
 
 import { Target, BookHeart, Sparkles } from "lucide-react";
-import Button from "../ui/Button";
-import Logo from "../ui/Logo";
+import { OvyFlower } from "../ui/Logo";
 
-const PROMISES = [
-  { t: "Your one thing", d: "Whichever symptom actually bothers you is what everything points at.", tint: "bg-brandsoft", fg: "text-brand", Icon: Target },
-  { t: "It remembers", d: "What you promised, what you tried, which explanation made sense. Never repeat yourself.", tint: "bg-accentsoft", fg: "text-accent", Icon: BookHeart },
-  { t: "Proof in days", d: "Cycles take months. I track what moves in days, so you see it working early.", tint: "bg-goodsoft", fg: "text-good", Icon: Sparkles },
+const PROOF = [
+  { Icon: Target, t: "Your one thing" },
+  { Icon: BookHeart, t: "It remembers" },
+  { Icon: Sparkles, t: "Proof in days" },
 ];
 
 export default function Welcome({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      {/* Gradient hero */}
-      <div
-        className="relative shrink-0 overflow-hidden px-6 pb-8 pt-14"
-        style={{ background: "linear-gradient(150deg, var(--c-brand-soft) 0%, #ffe9f2 55%, #fff6fa 100%)" }}
-      >
-        <div className="pointer-events-none absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/50" />
-        <div className="pointer-events-none absolute -bottom-10 -left-6 h-28 w-28 rounded-full bg-white/40" />
-        <div className="mb-2"><Logo size={30} /></div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">Your PCOS coach</p>
-        <h1 className="font-display mt-2 text-[28px] font-semibold leading-[1.12] text-ink">
-          Most advice is written for everyone.
-          <br />
-          <em className="text-brand">This one is written for you.</em>
-        </h1>
-        <p className="mt-2.5 text-[13.5px] leading-relaxed text-muted">
-          A coach, not a course. It starts from where you actually are.
-        </p>
+    <div
+      className="relative flex h-full min-h-0 flex-col overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(168deg, #fff1f7 0%, #ffd9e9 28%, #ff9ec9 58%, #f06ba8 82%, #e2559b 100%)",
+      }}
+    >
+      {/* lockup */}
+      <div className="flex items-center gap-2 px-6 pt-12">
+        <OvyFlower size={26} />
+        <span className="font-display text-[19px] font-semibold lowercase tracking-tight text-ink">ovy</span>
       </div>
 
-      <div className="scroll-thin min-h-0 flex-1 overflow-y-auto px-5 py-5">
-        <div className="space-y-3">
-          {PROMISES.map((p, i) => (
-            <div key={p.t} className={`rise flex items-start gap-3 rounded-[var(--r-md)] ${p.tint} p-4`}
-              style={{ animationDelay: `${90 + i * 80}ms` }}>
-              <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full bg-surface ${p.fg}`}>
-                <p.Icon size={17} />
-              </span>
-              <div>
-                <p className="text-[14px] font-bold text-ink">{p.t}</p>
-                <p className="mt-0.5 text-[12.5px] leading-relaxed text-muted">{p.d}</p>
-              </div>
-            </div>
+      {/* glowing flower centerpiece */}
+      <div className="relative grid flex-1 place-items-center">
+        {[168, 122, 82].map((d, i) => (
+          <span
+            key={d}
+            className="pointer-events-none absolute rounded-full"
+            style={{
+              width: d, height: d,
+              background: `rgba(255,255,255,${0.12 + i * 0.1})`,
+              boxShadow: "0 0 60px rgba(255,255,255,0.35)",
+              animation: `pulseSoft ${2.6 + i * 0.5}s ease-in-out infinite`,
+            }}
+          />
+        ))}
+        <span className="relative drop-shadow-[0_10px_30px_rgba(226,85,155,0.5)]">
+          <OvyFlower size={92} />
+        </span>
+      </div>
+
+      {/* copy + CTA */}
+      <div className="relative px-6 pb-8">
+        <h1 className="font-display text-[30px] font-semibold leading-[1.1] text-white drop-shadow-sm">
+          A coach,
+          <br />
+          not a course.
+        </h1>
+        <p className="mt-2 max-w-[260px] text-[13.5px] leading-relaxed text-white/85">
+          PCOS advice is written for everyone. ovy starts from where <em>you</em> actually are — and remembers.
+        </p>
+
+        <div className="mt-4 flex gap-2">
+          {PROOF.map(({ Icon, t }) => (
+            <span key={t} className="flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-1 text-[10.5px] font-semibold text-white backdrop-blur-sm">
+              <Icon size={11} />{t}
+            </span>
           ))}
         </div>
-      </div>
 
-      <div className="shrink-0 px-5 pb-7 pt-1">
-        <Button full onClick={onStart}>Let&apos;s start</Button>
-        <p className="mt-3 text-center text-[10.5px] leading-relaxed text-faint">
-          8 minutes of setup, once — then you never repeat it.
-          <br />Not a diagnosis, not medical advice.
+        <button
+          onClick={onStart}
+          className="card-soft mt-5 w-full rounded-full bg-white py-3.5 text-[15px] font-bold text-accent transition active:scale-[0.98]"
+        >
+          Get started
+        </button>
+        <p className="mt-3 text-center text-[10px] leading-relaxed text-white/70">
+          Takes ~8 minutes, once. Not a diagnosis, not medical advice.
         </p>
       </div>
     </div>

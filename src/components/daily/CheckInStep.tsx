@@ -5,6 +5,7 @@ import { Smile, Moon, Zap, type LucideIcon } from "lucide-react";
 import SlideShell from "./SlideShell";
 import Button from "../ui/Button";
 import Chip from "../ui/Chip";
+import MoodOrbs from "./MoodOrbs";
 import type { CheckIn } from "@/lib/types";
 
 /* Three rows, one tap each. The wording is deliberately not clinical — she is
@@ -87,16 +88,20 @@ export default function CheckInStep({
               </span>
               <span className="text-[10.5px] text-faint">{row.hint}</span>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {row.options.map((o) => (
-                <Chip
-                  key={o}
-                  label={o}
-                  selected={answers[row.key] === o}
-                  onClick={() => pick(row.key, o)}
-                />
-              ))}
-            </div>
+            {row.key === "mood" ? (
+              <MoodOrbs value={answers.mood} onPick={(v) => pick("mood", v)} />
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {row.options.map((o) => (
+                  <Chip
+                    key={o}
+                    label={o}
+                    selected={answers[row.key] === o}
+                    onClick={() => pick(row.key, o)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ))}
 
