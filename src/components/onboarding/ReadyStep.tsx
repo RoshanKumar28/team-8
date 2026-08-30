@@ -61,14 +61,6 @@ export default function ReadyStep({
         ))}
       </dl>
 
-      {memory.skipped.length > 0 && (
-        <div className="mt-4 rounded-[var(--r-md)] bg-warnsoft p-3.5">
-          <p className="text-[12px] font-semibold text-ink">You skipped {memory.skipped.length}</p>
-          <p className="mt-0.5 text-[12px] leading-relaxed text-muted">
-            No problem. I might ask again later if it turns out to matter — never twice.
-          </p>
-        </div>
-      )}
     </StepShell>
   );
 }

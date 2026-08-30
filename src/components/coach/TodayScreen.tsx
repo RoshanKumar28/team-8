@@ -60,7 +60,7 @@ export default function TodayScreen({
           </button>
         )}
 
-        {prediction && prediction.daysAway <= 10 && (() => {
+        {prediction && prediction.daysAway <= 5 && (() => {
           const c = flareCopy(prediction);
           return (
             <div className="card-soft rise rounded-[var(--r-md)] border border-accent/40 bg-accent/10 p-3.5">
@@ -164,19 +164,6 @@ export default function TodayScreen({
           </p>
         )}
 
-        {session.memory.leadingIndicators.length > 0 && (
-          <div className="mt-2 rounded-[var(--r-md)] bg-accentsoft p-3.5">
-            <p className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-accent"><Sparkles size={12} />Early signs</p>
-            {session.memory.leadingIndicators.slice(0, 3).map((l) => (
-              <div key={l.name} className="flex items-baseline justify-between py-0.5 text-[12px]">
-                <span className="text-ink">{l.name}</span>
-                <span className={`font-bold ${l.trend === "improving" ? "text-good" : l.trend === "worse" ? "text-bad" : "text-faint"}`}>
-                  {l.trend === "improving" ? <><TrendingUp size={11} className="inline align-[-1px]" /> improving</> : l.trend === "worse" ? <><TrendingDown size={11} className="inline align-[-1px]" /> watch</> : <><Minus size={11} className="inline align-[-1px]" /> steady</>}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

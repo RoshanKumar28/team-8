@@ -1,13 +1,6 @@
 "use client";
 
-import { Target, BookHeart, Sparkles } from "lucide-react";
 import { OvyFlower } from "../ui/Logo";
-
-const PROOF = [
-  { Icon: Target, t: "Your one thing" },
-  { Icon: BookHeart, t: "It remembers" },
-  { Icon: Sparkles, t: "Proof in days" },
-];
 
 export default function Welcome({ onStart }: { onStart: () => void }) {
   return (
@@ -57,13 +50,6 @@ export default function Welcome({ onStart }: { onStart: () => void }) {
           PCOS advice is written for everyone. ovy starts from where <em>you</em> actually are — and remembers.
         </p>
 
-        <div style={{ animationDelay: "260ms" }} className="pop-spring mt-4 flex gap-2">
-          {PROOF.map(({ Icon, t }) => (
-            <span key={t} className="flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-1 text-[10.5px] font-semibold text-white backdrop-blur-sm">
-              <Icon size={11} />{t}
-            </span>
-          ))}
-        </div>
 
         <button
           onClick={onStart}

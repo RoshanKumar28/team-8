@@ -72,8 +72,8 @@ export default function CycleLog({
           <p className="text-[12px] leading-relaxed text-brand">
             Your last {stats.cycles.length + 1} cycles: {stats.cycles.join(", ")} days apart.
             {Math.max(...stats.cycles) - Math.min(...stats.cycles) > 7
-              ? " That range is wide — which is exactly the kind of pattern worth showing a doctor. I won't pretend to predict it with a confident date."
-              : " Fairly steady — I'll keep watching."}
+              ? " That range is wide — worth showing a doctor."
+              : ""}
           </p>
         </div>
       )}
@@ -118,11 +118,6 @@ export default function CycleLog({
         })}
       </div>
 
-      <div className="mt-5 flex items-center justify-center gap-4 text-[10.5px] text-faint">
-        <span className="flex items-center gap-1.5"><span className="h-[9px] w-[9px] rounded-[2.5px] bg-brandsoft" /> not logged</span>
-        <span className="flex items-center gap-1.5"><span className="h-[9px] w-[9px] rounded-[2.5px] bg-brand" /> period day</span>
-        <span className="flex items-center gap-1.5"><span className="h-[9px] w-[9px] rounded-[2.5px] bg-brandsoft ring-1 ring-accent" /> today</span>
-      </div>
       <p className="mt-1 text-center text-[10px] text-faint">Each month is a uterus. Because it is.</p>
 
       <div className="px-5 pt-4">

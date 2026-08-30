@@ -94,7 +94,7 @@ export default function JourneyView({ session }: { session: Session }) {
   const fmtLong = (d: number) => dateOf(d).toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
 
   /* ---------- the day sheet ---------- */
-  function DaySheet({ d }: { d: number }) {
+  function renderDaySheet(d: number) {
     const st = stateOf(d);
     const theme = weekTheme(plan!, Math.ceil(d / 7));
     const dc = checks.filter((k) => k.day === d);
@@ -350,7 +350,7 @@ export default function JourneyView({ session }: { session: Session }) {
         </div>
       </div>
 
-      {selected !== null && <DaySheet d={selected} />}
+      {selected !== null && renderDaySheet(selected)}
     </div>
   );
 }

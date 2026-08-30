@@ -86,57 +86,6 @@ export default function MemoryView({ memory }: { memory: Memory }) {
         )}
       </Section>
 
-      <Section icon={HeartPulse} title="Your daily check-ins" hint="30 seconds a day, most days">
-        {(memory.checkIns ?? []).length ? (
-          <ul className="space-y-2">
-            {[...(memory.checkIns ?? [])].sort((a, b) => b.day - a.day).slice(0, 7).map((c) => (
-              <li key={c.day} className="text-[12.5px]">
-                <div className="flex items-baseline gap-2">
-                  <span className="shrink-0 font-semibold text-ink">Day {c.day}</span>
-                  <span className="text-muted">
-                    {[c.mood, c.sleep, c.energy].filter(Boolean).join(" · ") || "skipped"}
-                  </span>
-                </div>
-                {c.note && <p className="mt-0.5 text-[11.5px] italic text-faint">&ldquo;{c.note}&rdquo;</p>}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <Empty t="Mood, sleep and energy — the three that move in days, not months." />
-        )}
-      </Section>
-
-      <Section icon={UtensilsCrossed} title="What you've been eating" hint="shape of the plate, never calories">
-        {(memory.meals ?? []).length ? (
-          <ul className="space-y-2.5">
-            {mealsByDay(memory.meals ?? []).slice(0, 4).map(({ day, meals }) => (
-              <li key={day}>
-                <p className="text-[11px] font-bold uppercase tracking-wide text-faint">Day {day}</p>
-                <ul className="mt-0.5 space-y-1">
-                  {meals.map((m) => (
-                    <li key={m.id} className="text-[12.5px]">
-                      <span className="font-semibold text-ink">{m.slot}</span>
-                      {m.what && <span className="text-ink"> — {m.what}</span>}
-                      {m.shape.length > 0 && (
-                        <span className="text-muted"> · {m.shape.join(", ").toLowerCase()}</span>
-                      )}
-                      {m.after && (
-                        <span className={`font-medium ${
-                          ["Sleepy after", "Hungry again fast", "Craved sugar", "Bloated"].includes(m.after)
-                            ? "text-warn" : "text-good"
-                        }`}> → {m.after.toLowerCase()}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <Empty t="What went on the plate, and what the two hours after felt like." />
-        )}
-      </Section>
-
       <Section icon={ClipboardCheck} title="What you promised">
         {memory.commitments.length ? (
           <ul className="space-y-2">
@@ -192,7 +141,7 @@ export default function MemoryView({ memory }: { memory: Memory }) {
           ))}
         </ul>
         <p className="mt-2.5 rounded-[var(--r-sm)] bg-brandsoft px-3 py-2 text-[10.5px] leading-relaxed text-brand">
-          Doctors use 2 of these 3 to diagnose. This app never will — it shows what&apos;s known and what&apos;s missing, so one appointment does the work of five.
+          Doctors need 2 of 3. ovy only tracks the evidence — the verdict is your doctor&apos;s.
         </p>
       </Section>
 

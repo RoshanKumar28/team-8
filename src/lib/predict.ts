@@ -56,7 +56,7 @@ export function flareCopy(p: Prediction): { title: string; body: string } {
     : p.daysAway <= 3 ? `That starts in about ${p.daysAway} day${p.daysAway === 1 ? "" : "s"}.`
     : `That's roughly ${p.daysAway} days out.`;
   return {
-    title: p.daysAway <= 3 ? "Heads up — rough patch likely ahead" : "Your pattern, looking ahead",
-    body: `Based on your last ${p.cycles} logged cycles (${p.gaps.join(", ")} days apart), your period — and the mood, skin and energy dip that tends to ride a few days ahead of it — is likely between ${fmt(p.windowStart)} and ${fmt(p.windowEnd)}. ${when} Nothing is wrong with you when it hits; it's the pattern. Plan the light version of your week there.`,
+    title: "Heads up — rough patch likely ahead",
+    body: `Your last ${p.cycles} cycles suggest ${fmt(p.windowStart)}–${fmt(p.windowEnd)}. ${when} It's the pattern, not you — plan the light version of that week.`,
   };
 }
