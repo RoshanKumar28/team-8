@@ -1,0 +1,200 @@
+"use client";
+
+import type { Memory } from "@/lib/types";
+
+const trendColor = { improving: "text-good", flat: "text-faint", worse: "text-bad", unknown: "text-faint" };
+const trendMark = { improving: "▲", flat: "—", worse: "▼", unknown: "·" };
+const statusStyle: Record<string, string> = {
+  done: "bg-good/15 text-good",
+  partial: "bg-warn/15 text-warn",
+  missed: "bg-bad/10 text-bad",
+  pending: "bg-brandsoft text-brand",
+};
+const critLabel = { met: "Met", not_met: "Not met", unknown: "Unknown" };
+
+function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+  return (
+    <section className="border-b border-line px-4 py-4">
+      <div className="mb-2 flex items-baseline justify-between gap-2">
+        <h2 className="font-display text-[13px] font-semibold text-ink">{title}</h2>
+        {hint && <span className="text-[10px] text-faint">{hint}</span>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+const Empty = ({ t }: { t: string }) => <p className="text-[12px] italic text-faint">{t}</p>;
+
+export default function MemoryView({ memory }: { memory: Memory }) {
+  const p = memory.profile;
+
+  return (
+    <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-surface">
+      <Section title="Your one thing">
+        {p.primaryConcern ? (
+          <>
+            <p className="font-display text-[19px] font-semibold text-brand">{p.primaryConcern}</p>
+            {p.primaryConcernWhy && (
+              <p className="mt-1 text-[12.5px] leading-relaxed text-muted">&ldquo;{p.primaryConcernWhy}&rdquo;</p>
+            )}
+          </>
+        ) : (
+          <Empty t="Not chosen yet." />
+        )}
+      </Section>
+
+      <Section title="Early signs it's working" hint="these move in days, not months">
+        {memory.leadingIndicators.length ? (
+          <ul className="space-y-2.5">
+            {memory.leadingIndicators.map((l) => (
+              <li key={l.name} className="text-[12.5px]">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold text-ink">{l.name}</span>
+                  <span className={`shrink-0 text-[11.5px] font-bold ${trendColor[l.trend]}`}>
+                    {trendMark[l.trend]} {l.trend}
+                  </span>
+                </div>
+                <p className="text-muted">
+                  <span className="opacity-60 line-through">{l.baseline}</span>
+                  {" → "}
+                  <span className="font-medium text-ink">{l.current}</span>
+                </p>
+                {l.note && <p className="mt-0.5 text-[11.5px] italic text-faint">{l.note}</p>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="Baselines get set as you talk with your coach." />
+        )}
+      </Section>
+
+      <Section title="What you promised">
+        {memory.commitments.length ? (
+          <ul className="space-y-2">
+            {memory.commitments.map((c) => (
+              <li key={c.id} className="text-[12.5px]">
+                <div className="flex items-start gap-2">
+                  <span className={`mt-px shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${statusStyle[c.status]}`}>
+                    {c.status}
+                  </span>
+                  <span className="text-ink">{c.text}</span>
+                </div>
+                {c.note && <p className="ml-1 mt-0.5 text-[11.5px] italic text-muted">↳ {c.note}</p>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="Commitments land here at the end of each session." />
+        )}
+      </Section>
+
+      <Section title="Explanations that landed">
+        {memory.explanations.length ? (
+          <ul className="space-y-1.5">
+            {memory.explanations.map((e, i) => (
+              <li key={i} className="text-[12.5px]">
+                <span className={e.landed ? "text-good" : "text-bad"}>{e.landed ? "✓" : "✕"}</span>{" "}
+                <span className="font-semibold text-ink">{e.concept}:</span>{" "}
+                <span className={e.landed ? "text-muted" : "text-faint line-through"}>&ldquo;{e.framing}&rdquo;</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="Tracks which way of explaining things works for you." />
+        )}
+      </Section>
+
+      <Section title="Where you stand" hint="a checklist, never a verdict">
+        <ul className="space-y-1.5 text-[12.5px]">
+          {([
+            ["Irregular / absent ovulation", memory.criteria.irregularCycles],
+            ["Signs of high androgen", memory.criteria.highAndrogen],
+            ["Ovarian morphology", memory.criteria.ovarianMorphology],
+          ] as const).map(([label, c]) => (
+            <li key={label}>
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-ink">{label}</span>
+                <span className={`shrink-0 text-[11.5px] font-bold ${
+                  c.state === "met" ? "text-good" : c.state === "not_met" ? "text-faint" : "text-warn"
+                }`}>{critLabel[c.state]}</span>
+              </div>
+              {c.evidence && <p className="text-[11.5px] text-faint">{c.evidence}</p>}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-2.5 rounded-[var(--r-sm)] bg-brandsoft px-3 py-2 text-[10.5px] leading-relaxed text-brand">
+          Doctors use 2 of these 3 to diagnose. This app never will — it shows what&apos;s known and what&apos;s missing, so one appointment does the work of five.
+        </p>
+      </Section>
+
+      <Section title="Your reports, in plain words">
+        {memory.labs.length ? (
+          <ul className="space-y-2">
+            {memory.labs.map((l) => (
+              <li key={l.marker} className="text-[12.5px]">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold text-ink">{l.marker}</span>
+                  <span className={`shrink-0 text-[11.5px] font-bold ${
+                    l.flag === "high" ? "text-bad" : l.flag === "low" ? "text-warn" : "text-good"
+                  }`}>{l.value}</span>
+                </div>
+                <p className="text-[11.5px] leading-relaxed text-muted">{l.plainMeaning}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="Add any report — even one taken for something else." />
+        )}
+      </Section>
+
+      <Section title="Your life" hint="context, not just symptoms">
+        <dl className="space-y-1 text-[12.5px]">
+          {([["Age", p.age], ["Cycle", [p.cycleLength, p.cycleRegularity].filter(Boolean).join(" · ")],
+             ["Last period", p.lastPeriod], ["Work", p.job], ["Stress", p.stress], ["Sleep", p.sleep],
+             ["Movement", p.activity], ["Medications", p.meds.join(", ")],
+             ["Already tried", p.tried.join(" · ")]] as const)
+            .filter(([, v]) => v)
+            .map(([k, v]) => (
+              <div key={k}>
+                <dt className="inline font-semibold text-ink">{k}: </dt>
+                <dd className="inline text-muted">{v}</dd>
+              </div>
+            ))}
+        </dl>
+      </Section>
+
+      {memory.plan && (
+        <Section title="The plan">
+          <p className="font-display text-[14px] font-semibold text-brand">{memory.plan.headline}</p>
+          <p className="mb-2 text-[10.5px] text-faint">{memory.plan.horizon}</p>
+          <ul className="space-y-2">
+            {memory.plan.weeks.map((w) => (
+              <li key={w.label} className="rounded-[var(--r-md)] bg-raised p-3 text-[12.5px]">
+                <p className="font-semibold text-ink">{w.label}</p>
+                <p className="mb-1 italic text-brand">{w.forPrimary}</p>
+                <ul className="ml-4 list-disc space-y-0.5 text-muted">
+                  {w.tasks.map((t) => <li key={t}>{t}</li>)}
+                </ul>
+                <p className="mt-1.5 text-[11px] text-faint">Checkpoint: {w.checkpoint}</p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {memory.sessionLog.length > 0 && (
+        <Section title="Past sessions">
+          <ul className="space-y-1.5 text-[12.5px]">
+            {memory.sessionLog.map((l) => (
+              <li key={l.label}>
+                <span className="font-semibold text-ink">{l.label}: </span>
+                <span className="text-muted">{l.summary}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+    </div>
+  );
+}
