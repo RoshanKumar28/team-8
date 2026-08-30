@@ -7,16 +7,19 @@ import type { Session } from "@/lib/types";
 const REASONS = ["Schedule blew up", "No energy", "Flare / cramps", "Forgot", "Didn't feel like it"];
 
 export default function TodayScreen({
-  session, onCheck, onJumpDay,
+  session, onCheck, onJumpDay, onOpenCheckIn,
 }: {
   session: Session;
   onCheck: (commitmentId: string, done: boolean, reason: string) => void;
   onJumpDay: () => void;
+  onOpenCheckIn: () => void;
 }) {
   const [asking, setAsking] = useState<string | null>(null); // commitmentId awaiting a reason
   const tasks = todaysTasks(session);
   const doneCount = tasks.filter((t) => t.check?.done).length;
   const concern = session.memory.profile.primaryConcern;
+  const checkIn = session.memory.checkIns.find((c) => c.day === session.day) ?? null;
+  const meals = session.memory.meals.filter((m) => m.day === session.day);
 
   return (
     <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-bg">
@@ -36,6 +39,46 @@ export default function TodayScreen({
       </div>
 
       <div className="space-y-2.5 px-4 pb-6">
+        {/* Sits above the plan on purpose — it costs 30 seconds and it is the
+            only row that still makes sense on a day when nothing else does. */}
+        {!checkIn ? (
+          <button
+            onClick={onOpenCheckIn}
+            className="card-soft rise flex w-full items-center gap-3 rounded-[var(--r-md)] bg-brandsoft p-3.5 text-left transition hover:opacity-90"
+          >
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-[15px] text-brandink">
+              ✎
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[13.5px] font-semibold text-ink">30-second check-in</span>
+              <span className="block text-[11.5px] leading-snug text-muted">
+                Mood, sleep, energy — then what you ate. Three taps and it&apos;s done.
+              </span>
+            </span>
+          </button>
+        ) : (
+          <button
+            onClick={onOpenCheckIn}
+            className="card-soft rise w-full rounded-[var(--r-md)] bg-surface p-3.5 text-left"
+          >
+            <span className="flex items-baseline justify-between gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-good">Checked in today</span>
+              <span className="text-[11px] font-semibold text-brand">Edit</span>
+            </span>
+            <span className="mt-1 block text-[12.5px] text-ink">
+              {[checkIn.mood, checkIn.sleep, checkIn.energy].filter(Boolean).join(" · ")}
+            </span>
+            <span className="mt-0.5 block text-[11.5px] text-muted">
+              {meals.length
+                ? `${meals.length} meal${meals.length > 1 ? "s" : ""} logged`
+                : "No meals logged yet — tap to add them."}
+            </span>
+            {checkIn.note && (
+              <span className="mt-1 block text-[11.5px] italic text-faint">&ldquo;{checkIn.note}&rdquo;</span>
+            )}
+          </button>
+        )}
+
         {tasks.length === 0 && (
           <div className="rounded-[var(--r-md)] border border-line bg-surface p-4 text-center">
             <p className="text-[13px] text-muted">No plan yet — talk to your coach first and it lands here.</p>

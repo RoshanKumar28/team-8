@@ -29,6 +29,22 @@ export const seededSession = (): Session => ({
       tried: ["Keto for 3 weeks — quit, too restrictive with work lunches", "Biotin gummies for 4 months — no visible change", "Seed cycling from Instagram — stopped after 2 weeks"],
       meds: ["Metformin 500mg (prescribed by her gynaecologist)"],
     },
+    // Four days of check-ins and meals: enough for the Memory tab to have
+    // something to show, and enough for the carb-crash rule to fire on open.
+    checkIns: [
+      { day: 21, mood: "Fine", sleep: "Short but okay", energy: "Patchy", note: "", ts: 21 },
+      { day: 22, mood: "Good", sleep: "Slept well", energy: "Steady", note: "Walked after lunch, felt it by evening.", ts: 22 },
+      { day: 23, mood: "Flat", sleep: "Broken", energy: "Running on empty", note: "Wednesday. Calls till 9.", ts: 23 },
+      { day: 24, mood: "Low", sleep: "Barely", energy: "Patchy", note: "", ts: 24 },
+    ],
+    meals: [
+      { id: "m1", day: 22, slot: "Breakfast", what: "Two eggs, chai", shape: ["Protein first"], after: "Steady after", ts: 22 },
+      { id: "m2", day: 22, slot: "Lunch", what: "Dal, rice, salad", shape: ["Veg on the plate", "Mostly carbs"], after: "Didn't notice", ts: 22 },
+      { id: "m3", day: 23, slot: "Breakfast", what: "Toast on the way out", shape: ["Mostly carbs"], after: "Hungry again fast", ts: 23 },
+      { id: "m4", day: 23, slot: "Lunch", what: "Sandwich at the desk", shape: ["Mostly carbs", "Ate out"], after: "Sleepy after", ts: 23 },
+      { id: "m5", day: 23, slot: "Snack", what: "Biscuits", shape: ["Sweet"], after: "Craved sugar", ts: 23 },
+      { id: "m6", day: 24, slot: "Breakfast", what: "Eggs again", shape: ["Protein first"], after: "Steady after", ts: 24 },
+    ],
     checks: [
       { id: "k1", commitmentId: "c1", day: 22, done: true, reason: "" },
       { id: "k2", commitmentId: "c1", day: 23, done: false, reason: "Work ran late" },

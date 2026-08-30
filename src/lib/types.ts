@@ -72,12 +72,40 @@ export type TaskCheck = {
   reason: string;         // excuse ledger — only when not done
 };
 
+/* The 30-second check-in. Three taps, no typing required — it has to survive a
+   bad day, so nothing here is mandatory and there is no streak to break. */
+export type CheckIn = {
+  day: number;
+  mood: string;
+  sleep: string;
+  energy: string;
+  note: string;           // optional one-liner, never required
+  ts: number;
+};
+
+export type MealSlot = "Breakfast" | "Lunch" | "Dinner" | "Snack";
+
+/* Meals are logged for shape, not calories. What went on the plate and what
+   the next two hours felt like — that pairing is the insulin story, and it is
+   the only part of food a coach can actually act on. */
+export type MealLog = {
+  id: string;
+  day: number;
+  slot: MealSlot;
+  what: string;           // free text, optional
+  shape: string[];        // plate-shape chips
+  after: string;          // how the next couple of hours went
+  ts: number;
+};
+
 export type Explanation = { concept: string; framing: string; landed: boolean };
 export type PlanWeek = { label: string; forPrimary: string; tasks: string[]; checkpoint: string };
 export type Plan = { headline: string; horizon: string; weeks: PlanWeek[] };
 
 export type Memory = {
   checks: TaskCheck[];
+  checkIns: CheckIn[];
+  meals: MealLog[];
   profile: Profile;
   labs: Lab[];
   reports: { name: string; kind: string; takenOn: string }[];
@@ -120,6 +148,8 @@ export const emptyCriteria = (): Criteria => ({
 
 export const emptyMemory = (): Memory => ({
   checks: [],
+  checkIns: [],
+  meals: [],
   profile: emptyProfile(),
   labs: [],
   reports: [],

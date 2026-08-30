@@ -58,11 +58,14 @@ A PCOS coach for **one person and one goal**:
 - ✅ Today checklist — ✓ Did it / ✕ Couldn't, one tap
 - ✅ Excuse ledger — "what got in the way?" chips; misses become data, not guilt
 - ✅ No streaks by design — "a missed day breaks nothing"
-- ✅ Proactive follow-ups, coach speaks first (5 deterministic rules: repeated excuse → scope cut · missed yesterday · clean day noticed · gone quiet · daily nudge)
+- ✅ Proactive follow-ups, coach speaks first (7 deterministic rules: repeated excuse → scope cut · missed yesterday · clean day noticed · carb-crash pattern in meals · 3 low-energy days · gone quiet · daily nudge)
 - ✅ ⏭ next-day time jump (demo device)
 - ✅ Early-signs strip on Today
 - 🟡 Med/supplement adherence (captured; no dedicated rows/reminders yet)
-- ❌ Daily 30-second check-in — mood/sleep/energy chips (data source for insights)
+- ✅ Daily 30-second check-in — mood/sleep/energy chips, one tap each, every row skippable
+- ✅ Meal log — plate *shape* + the two hours after, never calories (the insulin story in her words)
+- ✅ Coach names the food pattern first ("carb-led lunch → sleepy after, twice this week")
+- ✅ Coach flags three low-energy days in a row before she has to raise it
 - ❌ Period start/end logging
 - ❌ Flare-mode button — bad day collapses the plan to one thing
 - ❌ Real notifications/reminders
@@ -74,6 +77,7 @@ A PCOS coach for **one person and one goal**:
 - ✅ Rotterdam checklist-not-verdict + what's still missing to confirm
 - ✅ Labs in plain words
 - ✅ Life context (job pressure, stress, sleep) as first-class data
+- ✅ Check-in history + meal history on the Memory screen
 - ✅ Session log
 - ✅ Persistence + old-session migration (localStorage)
 - ❌ Trends charts (cycle length, symptoms over time)

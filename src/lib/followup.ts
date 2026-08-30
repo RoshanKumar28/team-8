@@ -1,4 +1,4 @@
-import type { Session } from "./types";
+import type { MealLog, Session } from "./types";
 
 /* Deterministic follow-back rules. The coach opens the conversation — she
    doesn't have to. Runs on app open and after every time-jump; independent
@@ -36,6 +36,24 @@ export function followUp(s: Session): string | null {
     return `Yesterday: everything, done. I want you to notice that — because ${concern} won't show it yet, but this is exactly the week that decides whether it does in month three. Same again today. Anything in the way?`;
   }
 
+  // 3b) Meals say the same thing twice → name the pattern, not the person.
+  //     This is the one insight the food log exists to produce.
+  const recentMeals = m.meals.filter((x) => x.day >= s.day - 6);
+  const crashy = recentMeals.filter(
+    (x) => x.shape.includes("Mostly carbs") && ["Sleepy after", "Hungry again fast", "Craved sugar"].includes(x.after),
+  );
+  if (crashy.length >= 2) {
+    const slots = [...new Set(crashy.map((x) => x.slot.toLowerCase()))].join(" and ");
+    return `Something showed up in your food log, and I want to say it carefully: ${crashy.length} times this week a carb-led ${slots} was followed by "${crashy[0].after.toLowerCase()}". That's not you being greedy — that's the insulin thing we talked about, showing up on a plate. Try one change: put the protein in first at ${crashy[0].slot.toLowerCase()}, keep everything else identical. If the two hours after feel different, we've found your lever.`;
+  }
+
+  // 3c) Energy logged low three days running → say it before she has to.
+  const lowDays = m.checkIns
+    .filter((c) => c.day >= s.day - 3 && ["Running on empty", "Patchy"].includes(c.energy));
+  if (lowDays.length >= 3) {
+    return `Three days of check-ins in a row where energy came back "${lowDays[lowDays.length - 1].energy.toLowerCase()}". I'm not going to pretend that's nothing. Before we touch the plan — is this the 3-4pm dip we've been tracking, or is it all day? The answer changes what I'd do next.`;
+  }
+
   // 4) Nothing checked in for 2+ days → gentle re-open, never guilt.
   const lastCheck = Math.max(0, ...m.checks.map((k) => k.day));
   if (m.checks.length === 0 || s.day - lastCheck >= 2) {
@@ -50,6 +68,13 @@ export function followUp(s: Session): string | null {
   }
 
   return null;
+}
+
+/* Grouped by day, newest first — the shape both the memory view and any future
+   trends card want. */
+export function mealsByDay(meals: MealLog[]): { day: number; meals: MealLog[] }[] {
+  const days = [...new Set(meals.map((m) => m.day))].sort((a, b) => b - a);
+  return days.map((day) => ({ day, meals: meals.filter((m) => m.day === day) }));
 }
 
 /* Tasks due "today" = every pending commitment's tasks, flattened for the checklist. */

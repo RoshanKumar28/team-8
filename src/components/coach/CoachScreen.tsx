@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import ChatThread from "./ChatThread";
 import MemoryView from "./MemoryView";
 import TodayScreen from "./TodayScreen";
+import DailyCheckIn from "../daily/DailyCheckIn";
 import { followUp } from "@/lib/followup";
-import type { Session } from "@/lib/types";
+import type { CheckIn, MealLog, Session } from "@/lib/types";
 
 /* Opening line is built from the onboarding data — the first thing she sees
    is proof the coach was listening, not "Hi, how can I help you today?" */
@@ -38,6 +39,7 @@ export default function CoachScreen({
   const [tab, setTab] = useState<"today" | "chat" | "memory">(session.memory.plan ? "today" : "chat");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [checkingIn, setCheckingIn] = useState(false);
 
   useEffect(() => {
     if (session.transcript.length === 0) {
@@ -71,6 +73,24 @@ export default function CoachScreen({
     });
     const c = next.memory.commitments.find((x) => x.id === commitmentId);
     if (c && !done && reason) c.note = reason;
+    onUpdate(next);
+  }
+
+  // Re-answering the same day overwrites rather than stacking — she is
+  // correcting the record, not logging a second morning.
+  function saveCheckIn(c: Omit<CheckIn, "ts">) {
+    const next: Session = JSON.parse(JSON.stringify(session));
+    next.memory.checkIns = next.memory.checkIns.filter((x) => x.day !== c.day);
+    next.memory.checkIns.push({ ...c, ts: Date.now() });
+    onUpdate(next);
+  }
+
+  function saveMeals(meals: Omit<MealLog, "id" | "ts">[]) {
+    if (meals.length === 0) return;
+    const next: Session = JSON.parse(JSON.stringify(session));
+    next.memory.meals.push(
+      ...meals.map((m) => ({ ...m, id: Math.random().toString(36).slice(2, 8), ts: Date.now() })),
+    );
     onUpdate(next);
   }
 
@@ -110,6 +130,19 @@ export default function CoachScreen({
 
   const p = session.memory.profile;
 
+  // The slides take the whole phone — this is a 30-second job, not a panel to
+  // read the plan through.
+  if (checkingIn) {
+    return (
+      <DailyCheckIn
+        session={session}
+        onSaveCheckIn={saveCheckIn}
+        onSaveMeals={saveMeals}
+        onClose={() => setCheckingIn(false)}
+      />
+    );
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       <header className="shrink-0 border-b border-line bg-surface px-4 pb-0 pt-11">
@@ -143,7 +176,14 @@ export default function CoachScreen({
         </nav>
       </header>
 
-      {tab === "today" && <TodayScreen session={session} onCheck={check} onJumpDay={jumpDay} />}
+      {tab === "today" && (
+        <TodayScreen
+          session={session}
+          onCheck={check}
+          onJumpDay={jumpDay}
+          onOpenCheckIn={() => setCheckingIn(true)}
+        />
+      )}
       {tab === "chat" && <ChatThread session={session} busy={busy} error={error} onSend={send} />}
       {tab === "memory" && <MemoryView memory={session.memory} />}
     </div>

@@ -27,6 +27,8 @@ function migrate(raw: Partial<Session>): Session {
       reports: m.reports ?? [],
       leadingIndicators: m.leadingIndicators ?? [],
       checks: m.checks ?? [],
+      checkIns: m.checkIns ?? [],
+      meals: m.meals ?? [],
       commitments: m.commitments ?? [],
       explanations: m.explanations ?? [],
       sessionLog: m.sessionLog ?? [],

@@ -1,5 +1,6 @@
 "use client";
 
+import { mealsByDay } from "@/lib/followup";
 import type { Memory } from "@/lib/types";
 
 const trendColor = { improving: "text-good", flat: "text-faint", worse: "text-bad", unknown: "text-faint" };
@@ -71,6 +72,57 @@ export default function MemoryView({ memory }: { memory: Memory }) {
           </ul>
         ) : (
           <Empty t="Baselines get set as you talk with your coach." />
+        )}
+      </Section>
+
+      <Section title="Your daily check-ins" hint="30 seconds a day, most days">
+        {memory.checkIns.length ? (
+          <ul className="space-y-2">
+            {[...memory.checkIns].sort((a, b) => b.day - a.day).slice(0, 7).map((c) => (
+              <li key={c.day} className="text-[12.5px]">
+                <div className="flex items-baseline gap-2">
+                  <span className="shrink-0 font-semibold text-ink">Day {c.day}</span>
+                  <span className="text-muted">
+                    {[c.mood, c.sleep, c.energy].filter(Boolean).join(" · ") || "skipped"}
+                  </span>
+                </div>
+                {c.note && <p className="mt-0.5 text-[11.5px] italic text-faint">&ldquo;{c.note}&rdquo;</p>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="Mood, sleep and energy — the three that move in days, not months." />
+        )}
+      </Section>
+
+      <Section title="What you've been eating" hint="shape of the plate, never calories">
+        {memory.meals.length ? (
+          <ul className="space-y-2.5">
+            {mealsByDay(memory.meals).slice(0, 4).map(({ day, meals }) => (
+              <li key={day}>
+                <p className="text-[11px] font-bold uppercase tracking-wide text-faint">Day {day}</p>
+                <ul className="mt-0.5 space-y-1">
+                  {meals.map((m) => (
+                    <li key={m.id} className="text-[12.5px]">
+                      <span className="font-semibold text-ink">{m.slot}</span>
+                      {m.what && <span className="text-ink"> — {m.what}</span>}
+                      {m.shape.length > 0 && (
+                        <span className="text-muted"> · {m.shape.join(", ").toLowerCase()}</span>
+                      )}
+                      {m.after && (
+                        <span className={`font-medium ${
+                          ["Sleepy after", "Hungry again fast", "Craved sugar", "Bloated"].includes(m.after)
+                            ? "text-warn" : "text-good"
+                        }`}> → {m.after.toLowerCase()}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Empty t="What went on the plate, and what the two hours after felt like." />
         )}
       </Section>
 
