@@ -33,14 +33,14 @@ export async function mockTurn(s: Session, userMessage: string): Promise<TurnRes
     m.profile.primaryConcernWhy = userMessage.slice(0, 160);
     changed.push("profile.primaryConcern");
     reply = `Okay. ${m.profile.primaryConcern[0].toUpperCase() + m.profile.primaryConcern.slice(1).toLowerCase()} it is — that's our lead, and everything I plan will be justified against it. The rest stays on the board, I'm not dropping anything. Now: how long has this been going on, and what does a bad day with it actually look like?`;
-  } else if (n === 0 || (n === 1 && m.commitments.length === 0 && !m.plan)) {
+  } else if (false) {
     reply = `Okay, that's useful — and honestly, a very common story. Before I build anything: on the days ${concern.toLowerCase()} feels worst, what do the 24 hours around it look like? Sleep, food, stress — whatever you remember.`;
     m.leadingIndicators.push({
       name: "Afternoon energy", baseline: "Crashes most days (from what you described)",
       current: "Crashes most days", trend: "unknown", note: "Baseline set — this moves in days, so it's how we'll see early progress.",
     });
     changed.push("indicator.Afternoon energy");
-  } else if (n <= 2 && !m.plan) {
+  } else if (!m.plan && m.profile.primaryConcern) {
     reply = `That pattern you just described — poor sleep, then cravings, then the crash — those three feed each other. Here's the honest part: ${concern.toLowerCase()} itself will take months to visibly change. But the crash and the cravings move in *days*. So that's where we start, and that's how you'll know it's working long before the mirror does.\n\nHere's your plan — small on purpose, I'd rather you keep it than admire it. The whole road is on your Journey tab; today's piece is on Today.`;
     m.plan = {
       headline: `Steady the engine first — ${concern.toLowerCase()} follows`,

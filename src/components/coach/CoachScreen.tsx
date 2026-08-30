@@ -43,6 +43,7 @@ export default function CoachScreen({
   const [dayLogDate, setDayLogDate] = useState<string | null>(null);
   const [managingMeds, setManagingMeds] = useState(false);
   const [unread, setUnread] = useState(false);
+  const [planNew, setPlanNew] = useState(false);
 
   useEffect(() => {
     if (session.transcript.length === 0) {
@@ -219,6 +220,10 @@ export default function CoachScreen({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Something went wrong");
       onUpdate(data.session);
+      if (Array.isArray(data.changed) && data.changed.includes("plan")) {
+        notifyCoach("Your plan is ready", "Today has today's piece — Journey shows the whole road.", () => setTab("journey"));
+        setPlanNew(true);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed — try again");
       onUpdate(session);
@@ -326,7 +331,7 @@ export default function CoachScreen({
           {TABS.map(({ id, label, Icon }) => (
             <button
               key={id}
-              onClick={() => { setTab(id); if (id === "chat") setUnread(false); }}
+              onClick={() => { setTab(id); if (id === "chat") setUnread(false); if (id === "journey" || id === "today") setPlanNew(false); }}
               className="flex flex-1 flex-col items-center gap-0.5 py-1"
             >
               <span className={`relative grid h-8 w-14 place-items-center rounded-full transition ${
@@ -335,6 +340,9 @@ export default function CoachScreen({
                 <Icon size={19} strokeWidth={tab === id ? 2.4 : 1.9} />
                 {id === "chat" && unread && tab !== "chat" && (
                   <span className="absolute right-3 top-0.5 h-2 w-2 rounded-full bg-brand" />
+                )}
+                {(id === "journey" || id === "today") && planNew && tab !== id && (
+                  <span className="absolute right-3 top-0.5 h-2 w-2 rounded-full bg-accent" />
                 )}
               </span>
               <span className={`text-[9.5px] font-bold ${tab === id ? "text-brand" : "text-faint"}`}>
