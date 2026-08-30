@@ -36,7 +36,7 @@ function migrate(raw: Partial<Session>): Session {
   };
 }
 
-export type Stage = "welcome" | "report" | "review" | "questions" | "onething" | "ready" | "coach";
+export type Stage = "welcome" | "report" | "review" | "questions" | "ready" | "coach";
 
 export function useOnboarding() {
   const [session, setSession] = useState<Session | null>(null);
@@ -104,15 +104,6 @@ export function useOnboarding() {
     setQIndex((i) => i + 1);
   }, [patch]);
 
-  const setOneThing = useCallback((concerns: string[], why: string) => {
-    patch((s) => {
-      s.memory.profile.concerns = concerns;
-      s.memory.profile.primaryConcern = concerns[0] ?? "";
-      s.memory.profile.primaryConcernWhy = why;
-    });
-    setStage("ready");
-  }, [patch]);
-
   const finish = useCallback(() => {
     patch((s) => { s.onboarded = true; });
     setStage("coach");
@@ -127,12 +118,12 @@ export function useOnboarding() {
   }, []);
 
   useEffect(() => {
-    if (stage === "questions" && qIndex >= queue.length) setStage("onething");
+    if (stage === "questions" && qIndex >= queue.length) setStage("ready");
   }, [stage, qIndex, queue.length]);
 
   const progress = useMemo(() => {
     const map: Record<Stage, number> = {
-      welcome: 0, report: 8, review: 22, questions: 0, onething: 88, ready: 100, coach: 100,
+      welcome: 0, report: 8, review: 22, questions: 0, ready: 100, coach: 100,
     };
     if (stage === "questions") {
       return 30 + Math.round((qIndex / Math.max(1, queue.length)) * 55);
@@ -142,6 +133,6 @@ export function useOnboarding() {
 
   return {
     session, stage, setStage, qIndex, setQIndex, queue, progress,
-    lastReport, applyReport, answer, skip, setOneThing, finish, reset, patch,
+    lastReport, applyReport, answer, skip, finish, reset, patch,
   };
 }

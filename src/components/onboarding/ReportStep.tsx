@@ -98,8 +98,8 @@ function Option({
 }: { onClick: () => void; title: string; body: string; badge?: string; icon: React.ReactNode }) {
   return (
     <button onClick={onClick}
-      className="flex w-full gap-3 rounded-[var(--r-md)] border border-line bg-surface p-3.5 text-left transition hover:border-brand">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-brandsoft text-brand">
+      className="card-soft flex w-full gap-3 rounded-[var(--r-md)] bg-surface p-3.5 text-left transition hover:-translate-y-0.5">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-accentsoft text-accent">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
           strokeLinecap="round" strokeLinejoin="round">{icon}</svg>
       </div>

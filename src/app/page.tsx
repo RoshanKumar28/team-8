@@ -5,7 +5,6 @@ import Welcome from "@/components/onboarding/Welcome";
 import ReportStep from "@/components/onboarding/ReportStep";
 import ReviewStep from "@/components/onboarding/ReviewStep";
 import QuestionStep from "@/components/onboarding/QuestionStep";
-import OneThingStep from "@/components/onboarding/OneThingStep";
 import ReadyStep from "@/components/onboarding/ReadyStep";
 import CoachScreen from "@/components/coach/CoachScreen";
 import { seededSession } from "@/lib/seed";
@@ -56,20 +55,11 @@ export default function Page() {
           />
         )}
 
-        {o.stage === "onething" && (
-          <OneThingStep
-            progress={o.progress}
-            symptoms={o.session.memory.profile.symptoms}
-            onDone={o.setOneThing}
-            onBack={() => o.setStage("questions")}
-          />
-        )}
-
         {o.stage === "ready" && (
           <ReadyStep
             memory={o.session.memory}
             onStart={o.finish}
-            onBack={() => o.setStage("onething")}
+            onBack={() => o.setStage("questions")}
           />
         )}
 

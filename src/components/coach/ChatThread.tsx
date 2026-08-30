@@ -26,14 +26,14 @@ export default function ChatThread({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="scroll-thin min-h-0 flex-1 space-y-2.5 overflow-y-auto bg-raised/60 px-4 py-4">
+      <div className="scroll-thin min-h-0 flex-1 space-y-2.5 overflow-y-auto bg-bg px-4 py-4">
         {session.transcript.map((t, i) => (
           <div key={i} className={`rise flex ${t.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
               className={`max-w-[84%] whitespace-pre-wrap rounded-[var(--r-lg)] px-4 py-2.5 text-[13.5px] leading-relaxed shadow-sm ${
                 t.role === "user"
-                  ? "rounded-br-md bg-brand text-brandink"
-                  : "rounded-bl-md border border-line bg-surface text-ink"
+                  ? "card-soft rounded-br-md bg-brand text-brandink"
+                  : "card-soft rounded-bl-md bg-surface text-ink"
               }`}
             >
               {t.text}
@@ -42,7 +42,7 @@ export default function ChatThread({
         ))}
         {busy && (
           <div className="flex justify-start">
-            <div className="rounded-[var(--r-lg)] rounded-bl-md border border-line bg-surface px-4 py-3">
+            <div className="card-soft rounded-[var(--r-lg)] rounded-bl-md bg-surface px-4 py-3">
               <span className="dots"><span /><span /><span /></span>
             </div>
           </div>

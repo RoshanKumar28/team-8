@@ -19,7 +19,7 @@ export default function TodayScreen({
   const concern = session.memory.profile.primaryConcern;
 
   return (
-    <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-raised/60">
+    <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto bg-bg">
       <div className="px-4 pb-2 pt-4">
         <div className="flex items-baseline justify-between">
           <h2 className="font-display text-[19px] font-semibold text-ink">Day {session.day}</h2>
@@ -43,9 +43,7 @@ export default function TodayScreen({
         )}
 
         {tasks.map(({ commitment: c, check }) => (
-          <div key={c.id} className={`rise rounded-[var(--r-md)] border bg-surface p-3.5 ${
-            check?.done ? "border-good/40" : check ? "border-line opacity-80" : "border-line"
-          }`}>
+          <div key={c.id} className={`card-soft rise rounded-[var(--r-md)] bg-surface p-3.5 ${check && !check.done ? "opacity-80" : ""}`}>
             <p className={`text-[13.5px] leading-snug ${check?.done ? "text-faint line-through" : "text-ink"}`}>
               {c.text}
             </p>
@@ -70,11 +68,11 @@ export default function TodayScreen({
             ) : (
               <div className="mt-2.5 flex gap-2">
                 <button onClick={() => onCheck(c.id, true, "")}
-                  className="flex-1 rounded-[var(--r-sm)] bg-good py-2 text-[12.5px] font-bold text-brandink">
+                  className="flex-1 rounded-full bg-good py-2 text-[12.5px] font-bold text-brandink">
                   ✓ Did it
                 </button>
                 <button onClick={() => setAsking(c.id)}
-                  className="flex-1 rounded-[var(--r-sm)] border border-line bg-surface py-2 text-[12.5px] font-semibold text-muted">
+                  className="flex-1 rounded-full border border-line bg-surface py-2 text-[12.5px] font-semibold text-muted">
                   ✕ Couldn&apos;t
                 </button>
               </div>
@@ -89,8 +87,8 @@ export default function TodayScreen({
         )}
 
         {session.memory.leadingIndicators.length > 0 && (
-          <div className="mt-2 rounded-[var(--r-md)] bg-brandsoft p-3.5">
-            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-brand">Early signs</p>
+          <div className="mt-2 rounded-[var(--r-md)] bg-accentsoft p-3.5">
+            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-accent">Early signs</p>
             {session.memory.leadingIndicators.slice(0, 3).map((l) => (
               <div key={l.name} className="flex items-baseline justify-between py-0.5 text-[12px]">
                 <span className="text-ink">{l.name}</span>

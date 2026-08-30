@@ -1,27 +1,34 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------
-   BRAND PALETTE — terracotta rose / saffron / ivory / sage / espresso
+   PALETTE — soft pastel: blush bg, white cards, rose primary,
+   lavender + mint + butter accents. Swap hexes here to retheme.
    --------------------------------------------------------------- */
 :root {
-  --c-bg:         #f7f1e8;  /* warm ivory */
-  --c-surface:    #fffdf9;
-  --c-raised:     #f2eadd;
-  --c-ink:        #2e2420;  /* deep espresso */
-  --c-muted:      #6f6058;
-  --c-faint:      #a3958b;
-  --c-line:       #e7dccd;
-  --c-brand:      #c96a5e;  /* terracotta rose */
-  --c-brand-ink:  #fffdf9;
-  --c-brand-soft: #f6e3df;
-  --c-accent:     #d89b4a;  /* deep saffron */
-  --c-good:       #7a8a6f;  /* sage — positive states */
-  --c-warn:       #d89b4a;
-  --c-bad:        #b04a3c;
+  --c-bg:         #fbe9ec;  /* blush */
+  --c-surface:    #ffffff;
+  --c-raised:     #fdf5f4;
+  --c-ink:        #3d2e35;  /* warm cocoa */
+  --c-muted:      #8f7b83;
+  --c-faint:      #bfaab2;
+  --c-line:       #f6e3e6;
+  --c-brand:      #e5798f;  /* rose */
+  --c-brand-ink:  #ffffff;
+  --c-brand-soft: #fce8ec;
+  --c-accent:     #b3a3ea;  /* lavender */
+  --c-accent-soft:#efeafc;
+  --c-good:       #6bc5a8;  /* mint */
+  --c-good-soft:  #e4f6ef;
+  --c-warn:       #f0bd68;  /* butter */
+  --c-warn-soft:  #fdf3e0;
+  --c-bad:        #e2685f;
 
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
+  --r-sm: 14px;
+  --r-md: 20px;
+  --r-lg: 28px;
+
+  --shadow-card: 0 6px 24px -8px rgba(190, 120, 140, 0.18);
+  --shadow-pop:  0 12px 32px -8px rgba(190, 120, 140, 0.28);
 }
 
 @theme inline {
@@ -36,8 +43,11 @@
   --color-brandink: var(--c-brand-ink);
   --color-brandsoft: var(--c-brand-soft);
   --color-accent: var(--c-accent);
+  --color-accentsoft: var(--c-accent-soft);
   --color-good: var(--c-good);
+  --color-goodsoft: var(--c-good-soft);
   --color-warn: var(--c-warn);
+  --color-warnsoft: var(--c-warn-soft);
   --color-bad: var(--c-bad);
   --font-serif: var(--font-fraunces);
   --font-sans: var(--font-manrope);
@@ -52,7 +62,12 @@ body {
 
 h1, h2, .font-display {
   font-family: var(--font-fraunces), Georgia, serif;
+  letter-spacing: -0.01em;
 }
+
+/* Soft-card look: shadow does the separation work, borders stay whisper-pale */
+.card-soft { box-shadow: var(--shadow-card); }
+.card-pop  { box-shadow: var(--shadow-pop); }
 
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .rise { animation: rise 0.28s ease-out both; }

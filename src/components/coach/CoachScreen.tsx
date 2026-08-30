@@ -11,19 +11,20 @@ import type { Session } from "@/lib/types";
    is proof the coach was listening, not "Hi, how can I help you today?" */
 function opener(s: Session): string {
   const p = s.memory.profile;
+  if (!p.primaryConcern) {
+    const symptoms = p.symptoms.length
+      ? `You told me about ${p.symptoms.slice(0, 4).map((x) => x.toLowerCase()).join(", ")}${p.symptoms.length > 4 ? " and more" : ""}. `
+      : "";
+    return `${symptoms}Before I build anything, one question that decides everything else: of all of it, which one actually gets to you — the one you think about in the mirror? There's no wrong answer, and "I honestly don't know, it all feels connected" is a fine one too — I'll figure it out with you as we go.`;
+  }
   const bits: string[] = [];
-  if (p.primaryConcern) {
-    const rest = p.concerns.slice(1);
-    bits.push(
-      rest.length
-        ? `So — ${p.primaryConcern.toLowerCase()} first, with ${rest.map((c) => c.toLowerCase()).join(" and ")} on the board too. That's the order you gave me, and it's the order I'll work.`
-        : `So — ${p.primaryConcern.toLowerCase()}. That's what we're aiming at.`
-    );
-    if (p.primaryConcernWhy) bits.push(`And I heard why: "${p.primaryConcernWhy}". I'll remember that on the days this feels pointless.`);
-  }
-  if (p.stress && p.job) {
-    bits.push(`You also told me about ${p.job.toLowerCase()} and ${p.stress.toLowerCase()} stress, so I'm not going to hand you a plan written for someone with a quiet life.`);
-  }
+  const rest = p.concerns.slice(1);
+  bits.push(
+    rest.length
+      ? `So — ${p.primaryConcern.toLowerCase()} first, with ${rest.map((c) => c.toLowerCase()).join(" and ")} on the board too.`
+      : `So — ${p.primaryConcern.toLowerCase()}. That's what we're aiming at.`
+  );
+  if (p.primaryConcernWhy) bits.push(`And I heard why: "${p.primaryConcernWhy}". I'll remember that on the days this feels pointless.`);
   bits.push(`One honest thing before we build the plan: how long has this been going on, and what does a bad day with it actually look like?`);
   return bits.join(" ");
 }
@@ -113,7 +114,7 @@ export default function CoachScreen({
     <div className="flex h-full min-h-0 flex-col">
       <header className="shrink-0 border-b border-line bg-surface px-4 pb-0 pt-11">
         <div className="flex items-center gap-3 pb-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand font-display text-[15px] font-semibold text-brandink">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent font-display text-[15px] font-semibold text-brandink">
             {p.name ? p.name[0].toUpperCase() : "C"}
           </div>
           <div className="min-w-0 flex-1">

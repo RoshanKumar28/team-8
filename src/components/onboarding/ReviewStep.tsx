@@ -44,7 +44,7 @@ export default function ReviewStep({
             </h2>
             <ul className="space-y-2">
               {report.labs.map((l, i) => (
-                <li key={l.marker} className="rise rounded-[var(--r-md)] border border-line bg-surface p-3"
+                <li key={l.marker} className="card-soft rise rounded-[var(--r-md)] bg-surface p-3"
                   style={{ animationDelay: `${i * 60}ms` }}>
                   <div className="flex items-baseline justify-between gap-2">
                     <p className="text-[13.5px] font-semibold text-ink">{l.marker}</p>

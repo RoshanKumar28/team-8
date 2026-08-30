@@ -6,8 +6,8 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const styles = {
-  primary: "bg-brand text-brandink hover:opacity-90",
-  secondary: "bg-surface text-ink border border-line hover:bg-raised",
+  primary: "card-soft rounded-full bg-brand text-brandink hover:opacity-90",
+  secondary: "rounded-full bg-surface text-ink border border-line hover:bg-raised",
   ghost: "bg-transparent text-muted hover:text-ink",
 };
 
