@@ -15,6 +15,7 @@ export const seededSession = (): Session => ({
   memory: {
     profile: {
       name: "Maya", age: "27", diagnosed: "yes",
+      concerns: ["Hair fall", "3-4pm energy crash", "Acne along jawline"],
       primaryConcern: "Hair fall",
       primaryConcernWhy: "Can see her scalp in photos now. Stopped tying her hair up. Says it's the thing she thinks about every morning.",
       cycleLength: "44 days average, last 6 cycles",

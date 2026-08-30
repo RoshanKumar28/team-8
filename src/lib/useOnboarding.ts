@@ -17,7 +17,11 @@ function migrate(raw: Partial<Session>): Session {
     memory: {
       ...base.memory,
       ...m,
-      profile: { ...base.memory.profile, ...(m.profile ?? {}) },
+      profile: {
+        ...base.memory.profile,
+        ...(m.profile ?? {}),
+        concerns: m.profile?.concerns ?? (m.profile?.primaryConcern ? [m.profile.primaryConcern] : []),
+      },
       criteria: { ...base.memory.criteria, ...(m.criteria ?? {}) },
       labs: m.labs ?? [],
       reports: m.reports ?? [],
@@ -100,9 +104,10 @@ export function useOnboarding() {
     setQIndex((i) => i + 1);
   }, [patch]);
 
-  const setOneThing = useCallback((concern: string, why: string) => {
+  const setOneThing = useCallback((concerns: string[], why: string) => {
     patch((s) => {
-      s.memory.profile.primaryConcern = concern;
+      s.memory.profile.concerns = concerns;
+      s.memory.profile.primaryConcern = concerns[0] ?? "";
       s.memory.profile.primaryConcernWhy = why;
     });
     setStage("ready");

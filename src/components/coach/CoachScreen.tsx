@@ -13,7 +13,12 @@ function opener(s: Session): string {
   const p = s.memory.profile;
   const bits: string[] = [];
   if (p.primaryConcern) {
-    bits.push(`So — ${p.primaryConcern.toLowerCase()}. That's what we're aiming at.`);
+    const rest = p.concerns.slice(1);
+    bits.push(
+      rest.length
+        ? `So — ${p.primaryConcern.toLowerCase()} first, with ${rest.map((c) => c.toLowerCase()).join(" and ")} on the board too. That's the order you gave me, and it's the order I'll work.`
+        : `So — ${p.primaryConcern.toLowerCase()}. That's what we're aiming at.`
+    );
     if (p.primaryConcernWhy) bits.push(`And I heard why: "${p.primaryConcernWhy}". I'll remember that on the days this feels pointless.`);
   }
   if (p.stress && p.job) {

@@ -13,7 +13,7 @@ export default function ReadyStep({
   const score = completeness(p);
 
   const known: [string, string][] = [
-    ["Working on", p.primaryConcern],
+    ["Working on", p.concerns.length ? p.concerns.join(" → ") : p.primaryConcern],
     ["Cycle", [p.cycleLength, p.cycleRegularity].filter(Boolean).join(" · ")],
     ["Symptoms", p.symptoms.join(", ")],
     ["Life", [p.job, p.stress && `${p.stress} stress`, p.sleep && `${p.sleep} sleep`].filter(Boolean).join(" · ")],

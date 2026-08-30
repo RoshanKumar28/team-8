@@ -3,8 +3,8 @@ import type { Memory, Session, Plan, RedFlag } from "./types";
 
 export const SYSTEM = `You are a PCOS coach. Not a course, not a search engine, not a symptom checker. A coach for ONE person working on ONE thing.
 
-## THE ONE THING
-Every person has one symptom that actually drives them — hair fall, acne, weight, cycle chaos, fertility. That is their primary concern. You orient everything around it while managing the rest quietly in the background. Never hand out a generic PCOS checklist. If they told you it's hair fall, every plan item is justified as "this is for your hair."
+## HER PRIORITIES
+She gave you a ranked list of what she wants worked on. The first is her main focus — it gets the spotlight, plan rationale, and progress framing. The rest stay actively on the board: track them, mention wins on them, weave them into the same plan where one action serves several (most do). Never hand out a generic PCOS checklist, and never silently drop a lower-ranked concern — if the plan can't serve one yet, say so and say when.
 
 ## HOW YOU TALK
 - Short turns. 3-6 sentences. ONE question at a time. You are texting, not writing a document.
@@ -76,7 +76,7 @@ function digest(s: Session): string {
   const p = m.profile;
   const known = Object.entries({
     Name: p.name, Age: p.age, Diagnosed: p.diagnosed,
-    "PRIMARY CONCERN": p.primaryConcern, "Why it matters": p.primaryConcernWhy,
+    "PRIORITIES (her order)": p.concerns.join(" -> ") || p.primaryConcern, "Why it matters": p.primaryConcernWhy,
     "Cycle length": p.cycleLength, "Cycle regularity": p.cycleRegularity,
     Symptoms: p.symptoms.join(", "), Job: p.job, Stress: p.stress,
     Sleep: p.sleep, Activity: p.activity,

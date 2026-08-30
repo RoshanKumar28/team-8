@@ -31,12 +31,17 @@ export default function MemoryView({ memory }: { memory: Memory }) {
 
   return (
     <div className="scroll-thin min-h-0 flex-1 overflow-y-auto bg-surface">
-      <Section title="Your one thing">
+      <Section title="Your priorities" hint="in your order">
         {p.primaryConcern ? (
           <>
             <p className="font-display text-[19px] font-semibold text-brand">{p.primaryConcern}</p>
+            {p.concerns.length > 1 && (
+              <p className="mt-1 text-[12px] text-muted">
+                then {p.concerns.slice(1).map((c) => c.toLowerCase()).join(" · ")}
+              </p>
+            )}
             {p.primaryConcernWhy && (
-              <p className="mt-1 text-[12.5px] leading-relaxed text-muted">&ldquo;{p.primaryConcernWhy}&rdquo;</p>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">&ldquo;{p.primaryConcernWhy}&rdquo;</p>
             )}
           </>
         ) : (

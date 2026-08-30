@@ -26,7 +26,8 @@ export type Profile = {
   name: string;
   age: string;
   diagnosed: Diagnosed;
-  primaryConcern: string;
+  concerns: string[];        // priority order — first is the main focus
+  primaryConcern: string;    // = concerns[0]
   primaryConcernWhy: string;
   cycleLength: string;
   cycleRegularity: string;
@@ -105,7 +106,7 @@ export type Session = {
 };
 
 export const emptyProfile = (): Profile => ({
-  name: "", age: "", diagnosed: "unsure", primaryConcern: "", primaryConcernWhy: "",
+  name: "", age: "", diagnosed: "unsure", concerns: [], primaryConcern: "", primaryConcernWhy: "",
   cycleLength: "", cycleRegularity: "", lastPeriod: "", symptoms: [],
   job: "", stress: "", sleep: "", activity: "", tried: [], meds: [],
 });
