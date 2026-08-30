@@ -57,9 +57,6 @@ export default function Welcome({ onStart }: { onStart: () => void }) {
         >
           Get started
         </button>
-        <p className="mt-3 text-center text-[10px] leading-relaxed text-white/70">
-          Takes ~8 minutes, once. Not a diagnosis, not medical advice.
-        </p>
       </div>
     </div>
   );

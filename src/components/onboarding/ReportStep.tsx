@@ -53,7 +53,6 @@ export default function ReportStep({
       onBack={onBack}
       eyebrow="Step 1 of 3"
       title="Do you have any reports?"
-      subtitle="Bloodwork or a scan. Even one taken for something else — I can often still read useful things from it."
       footer={
         <div className="space-y-2">
           <Button full variant="secondary" onClick={onSkip}>
@@ -74,7 +73,7 @@ export default function ReportStep({
         <Option
           onClick={() => camRef.current?.click()}
           tint="bg-brandsoft" fg="text-brand"
-          title="Photograph a paper report"
+          title="Photograph"
           body="Most clinics only hand you a printout. Just point your camera at it — no scanner needed."
           badge="Most people"
           icon={<Camera size={19} />}
@@ -91,13 +90,6 @@ export default function ReportStep({
           <p className="rounded-[var(--r-sm)] bg-bad/10 px-3 py-2 text-[12px] text-bad">{error}</p>
         )}
 
-        <div className="rounded-[var(--r-md)] bg-goodsoft px-3.5 py-3">
-          <p className="flex gap-2 text-[12px] leading-relaxed text-muted">
-            <ShieldCheck size={15} className="mt-0.5 shrink-0 text-good" />
-            <span>Whatever you share, I&apos;ll explain what each value means in plain words. I won&apos;t tell you
-            whether you have PCOS — no app honestly can.</span>
-          </p>
-        </div>
       </div>
     </StepShell>
   );

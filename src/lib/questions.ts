@@ -35,7 +35,7 @@ export const QUESTIONS: Question[] = [
   {
     id: "cycleRegularity",
     group: "Your cycle",
-    ask: "Are they predictable?",
+    ask: "Are your cycles predictable?",
     why: "Irregular cycles are the first Rotterdam criterion. If yours are unpredictable, I won't plan your weeks as if they aren't.",
     kind: "chips",
     options: ["Fairly regular", "Varies by a week or so", "All over the place", "I've skipped months", "Not sure"],
