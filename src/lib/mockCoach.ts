@@ -56,6 +56,28 @@ export async function mockTurn(s: Session, userMessage: string): Promise<TurnRes
     );
     s.phase = "session";
     changed.push("plan", "commitments");
+  } else if (/^deal$/i.test(userMessage.trim())) {
+    reply = `Good. One thing, done well, beats five things half-done — that's not a compromise, it's the strategy. I'll bring the rest back when this one feels boring. That's how we'll know you're ready.`;
+    m.explanations.push({ concept: "Scope cut", framing: "One thing done well beats five half-done", landed: true });
+    changed.push("explanations");
+  } else if (/took (it|them).*(forgot|log)|forgot to log/i.test(userMessage)) {
+    reply = `Fixed — I've marked yesterday's doses as taken. For what it's worth: the taking is the part that matters, the logging just keeps your doctor's picture honest. If ticking it feels like a chore, tell me and we'll make it lighter.`;
+    const yesterday = s.day - 1;
+    for (const med of m.medications ?? []) {
+      for (const t of med.timings) {
+        if (!(m.medTakes ?? []).some((k) => k.day === yesterday && k.medId === med.id && k.timing === t)) {
+          m.medTakes.push({ day: yesterday, medId: med.id, timing: t, ts: Date.now() });
+        }
+      }
+    }
+    changed.push("medTakes");
+  } else if (/i('| a)?ctually forgot|^i forgot/i.test(userMessage)) {
+    reply = `Thank you for the honest answer — most people say "took it". Let's make forgetting harder instead of trying harder: put the strip next to your toothbrush tonight. Same trigger, every day. I'll check in tomorrow.`;
+    m.explanations.push({ concept: "Habit stacking", framing: "Attach the dose to brushing teeth, not to memory", landed: true });
+    changed.push("explanations");
+  } else if (/stopped taking/i.test(userMessage)) {
+    reply = `Okay — that's important, and I'm glad you told me instead of quietly skipping. I won't lecture you. But this is a conversation for your doctor, not me: side effects, cost, whatever the reason is, they can adjust it. I've noted it so it's on your next appointment list. Want me to add anything else to that list?`;
+    changed.push("profile");
   } else if (/skip|miss|couldn'?t|didn'?t|cramp|flare|bad week|too much/i.test(userMessage)) {
     reply = `Thank you for telling me instead of disappearing — that's the thing most people don't do. We're not repeating the same plan louder. New version: ONE thing this week. Just the morning protein. Everything else is paused, and missing a day breaks nothing.\n\nWhat happened, by the way — was it the schedule, or the energy?`;
     const c = m.commitments.find((x) => x.status === "pending");

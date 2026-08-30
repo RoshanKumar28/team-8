@@ -14,6 +14,7 @@ const statusStyle: Record<string, string> = {
   partial: "bg-warn/15 text-warn",
   missed: "bg-bad/10 text-bad",
   pending: "bg-brandsoft text-brand",
+  paused: "bg-raised text-faint",
 };
 const critLabel = { met: "Met", not_met: "Not met", unknown: "Unknown" };
 

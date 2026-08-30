@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, X, FastForward, NotebookPen, Sparkles, TrendingUp, TrendingDown, Minus, Pencil } from "lucide-react";
+import { Check, X, FastForward, NotebookPen, Sparkles, TrendingUp, TrendingDown, Minus, Pencil, MessageCircleHeart, ChevronRight } from "lucide-react";
 import { CloudRainWind } from "lucide-react";
 import MedsCard from "../meds/MedsCard";
 import { todaysTasks } from "@/lib/followup";
@@ -11,7 +11,7 @@ import type { MedTiming, Session } from "@/lib/types";
 const REASONS = ["Schedule blew up", "No energy", "Flare / cramps", "Forgot", "Didn't feel like it"];
 
 export default function TodayScreen({
-  session, onCheck, onJumpDay, onOpenCheckIn, onTakeMed, onManageMeds,
+  session, onCheck, onJumpDay, onOpenCheckIn, onTakeMed, onManageMeds, coachNote, onOpenChat,
 }: {
   session: Session;
   onCheck: (commitmentId: string, done: boolean, reason: string) => void;
@@ -19,6 +19,8 @@ export default function TodayScreen({
   onOpenCheckIn: () => void;
   onTakeMed: (medId: string, timing: MedTiming) => void;
   onManageMeds: () => void;
+  coachNote: boolean;
+  onOpenChat: () => void;
 }) {
   const [asking, setAsking] = useState<string | null>(null); // commitmentId awaiting a reason
   const tasks = todaysTasks(session);
@@ -46,6 +48,18 @@ export default function TodayScreen({
       </div>
 
       <div className="space-y-2.5 px-4 pb-6">
+        {coachNote && (
+          <button onClick={onOpenChat}
+            className="card-soft rise flex w-full items-center gap-3 rounded-[var(--r-md)] bg-brand p-3.5 text-left text-brandink transition hover:opacity-95">
+            <MessageCircleHeart size={18} className="shrink-0" />
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13px] font-bold">Your coach left you a note</span>
+              <span className="block text-[11.5px] opacity-80">One tap to read it — quick replies inside.</span>
+            </span>
+            <ChevronRight size={16} className="shrink-0" />
+          </button>
+        )}
+
         {prediction && prediction.daysAway <= 10 && (() => {
           const c = flareCopy(prediction);
           return (

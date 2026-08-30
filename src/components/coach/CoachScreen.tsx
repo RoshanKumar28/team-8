@@ -11,7 +11,7 @@ import DailyCheckIn from "../daily/DailyCheckIn";
 import DayLogSheet from "../cycle/DayLogSheet";
 import MedsManager from "../meds/MedsManager";
 import { Sun, Map, Flower2, MessageCircleHeart, BookHeart } from "lucide-react";
-import { followUp } from "@/lib/followup";
+import { applyScopeCut, composeFollowUp } from "@/lib/followup";
 import { askPermission, notifyCoach } from "@/lib/notify";
 import CoachToast from "../ui/CoachToast";
 import type { CheckIn, CycleDayLog, MealLog, Medication, MedTiming, Session } from "@/lib/types";
@@ -75,17 +75,18 @@ export default function CoachScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.memory.plan, session.transcript.length, session.day]);
 
-  // The coach speaks first when the rules say there's something to say.
+  // The coach speaks first when the rules say there's something to say. She is
+  // not yanked into the chat — badge, Today banner, and a browser notification.
   function ping(s: Session) {
-    const msg = followUp(s);
-    if (!msg) return;
-    onUpdate({
-      ...s,
-      lastCoachPingDay: s.day,
-      transcript: [...s.transcript, { role: "coach", text: msg, ts: Date.now() }],
-    });
-    const name = s.memory.profile.name;
-    notifyCoach(name ? `ovy → ${name}` : "ovy", msg, () => { setTab("chat"); setUnread(false); });
+    const fu = composeFollowUp(s);
+    if (!fu) return;
+    const next: Session = JSON.parse(JSON.stringify(s));
+    next.lastCoachPingDay = next.day;
+    if (fu.action === "scopeCut") applyScopeCut(next);
+    next.transcript.push({ role: "coach", text: fu.text, ts: Date.now(), quick: fu.quick });
+    onUpdate(next);
+    const name = next.memory.profile.name;
+    notifyCoach(name ? `ovy → ${name}` : "ovy", fu.text, () => { setTab("chat"); setUnread(false); });
     setUnread(true);
   }
 
@@ -238,6 +239,8 @@ export default function CoachScreen({
           onOpenCheckIn={() => setCheckingIn(true)}
           onTakeMed={takeMed}
           onManageMeds={() => setManagingMeds(true)}
+          coachNote={unread}
+          onOpenChat={() => { setTab("chat"); setUnread(false); }}
         />
       )}
       {tab === "journey" && <div key="journey" className="pop-spring flex min-h-0 flex-1 flex-col"><JourneyView session={session} /></div>}
