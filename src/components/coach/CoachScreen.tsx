@@ -6,6 +6,7 @@ import MemoryView from "./MemoryView";
 import TodayScreen from "./TodayScreen";
 import JourneyView from "./JourneyView";
 import CycleLog from "./CycleLog";
+import { OvyFlower } from "../ui/Logo";
 import DailyCheckIn from "../daily/DailyCheckIn";
 import { Sun, Map, Flower2, MessageCircleHeart, BookHeart } from "lucide-react";
 import { followUp } from "@/lib/followup";
@@ -150,12 +151,10 @@ export default function CoachScreen({
     <div className="flex h-full min-h-0 flex-col">
       <header className="shrink-0 px-4 pb-1 pt-11" style={{ background: "linear-gradient(150deg, var(--c-brand-soft), var(--c-raised))" }}>
         <div className="flex items-center gap-3 pb-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent font-display text-[15px] font-semibold text-brandink">
-            {p.name ? p.name[0].toUpperCase() : "C"}
-          </div>
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-surface shadow-sm"><OvyFlower size={26} /></div>
           <div className="min-w-0 flex-1">
             <p className="font-display truncate text-[15px] font-semibold text-ink">
-              {p.primaryConcern ? `Your coach · ${p.primaryConcern}` : "Your coach"}
+              {p.primaryConcern ? `ovy · ${p.primaryConcern.toLowerCase()}` : "ovy"}
             </p>
             <p className="truncate text-[11px] text-muted">
               {busy ? "typing…" : session.memory.plan ? session.memory.plan.horizon : "Getting to know you"}

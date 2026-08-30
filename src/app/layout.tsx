@@ -6,9 +6,9 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
-  title: "Your PCOS coach",
+  title: "ovy — your PCOS coach",
   description: "Track what actually works for you. A coach, not a course.",
-  appleWebApp: { capable: true, statusBarStyle: "default" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "ovy" },
 };
 
 export const viewport: Viewport = {

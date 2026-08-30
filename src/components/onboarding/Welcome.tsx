@@ -2,6 +2,7 @@
 
 import { Target, BookHeart, Sparkles } from "lucide-react";
 import Button from "../ui/Button";
+import Logo from "../ui/Logo";
 
 const PROMISES = [
   { t: "Your one thing", d: "Whichever symptom actually bothers you is what everything points at.", tint: "bg-brandsoft", fg: "text-brand", Icon: Target },
@@ -15,10 +16,11 @@ export default function Welcome({ onStart }: { onStart: () => void }) {
       {/* Gradient hero */}
       <div
         className="relative shrink-0 overflow-hidden px-6 pb-8 pt-14"
-        style={{ background: "linear-gradient(150deg, #fde7ec 0%, #f3ecfc 55%, #e9f7f1 100%)" }}
+        style={{ background: "linear-gradient(150deg, var(--c-brand-soft) 0%, #ffe9f2 55%, #fff6fa 100%)" }}
       >
         <div className="pointer-events-none absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/50" />
         <div className="pointer-events-none absolute -bottom-10 -left-6 h-28 w-28 rounded-full bg-white/40" />
+        <div className="mb-2"><Logo size={30} /></div>
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand">Your PCOS coach</p>
         <h1 className="font-display mt-2 text-[28px] font-semibold leading-[1.12] text-ink">
           Most advice is written for everyone.

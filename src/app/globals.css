@@ -7,21 +7,22 @@
 :root {
   --c-bg:         #ffffff;  /* white canvas */
   --c-surface:    #ffffff;
-  --c-raised:     #faf7f8;
-  --c-ink:        #3d2e35;  /* warm cocoa */
-  --c-muted:      #8f7b83;
-  --c-faint:      #bfaab2;
-  --c-line:       #f3eaee;
-  --c-brand:      #e5798f;  /* rose */
+  --c-raised:     #fdf1f6;
+  --c-ink:        #2a2a2a;  /* warm cocoa */
+  --c-muted:      #6e5f66;
+  --c-faint:      #a8969f;
+  --c-line:       #f3dbe6;
+  --c-brand:      #f06ba8;  /* petal pink */
   --c-brand-ink:  #ffffff;
-  --c-brand-soft: #fce8ec;
-  --c-accent:     #b3a3ea;  /* lavender */
-  --c-accent-soft:#efeafc;
-  --c-good:       #6bc5a8;  /* mint */
-  --c-good-soft:  #e4f6ef;
-  --c-warn:       #f0bd68;  /* butter */
+  --c-brand-soft: #fbd8e5;  /* blush tint */
+  --c-accent:     #ff3d8f;  /* bloom magenta */
+  --c-accent-soft:#ffe3f0;
+  --c-good:       #4fae8a;
+  --c-good-soft:  #e7f6f0;
+  --c-warn:       #d9932f;  /* butter */
   --c-warn-soft:  #fdf3e0;
-  --c-bad:        #e2685f;
+  --c-bad:        #d24b4b;
+  --c-lime:       #d4ff3d;  /* lime accent — highlights on dark/ink only */
 
   --r-sm: 14px;
   --r-md: 20px;
@@ -49,6 +50,7 @@
   --color-warn: var(--c-warn);
   --color-warnsoft: var(--c-warn-soft);
   --color-bad: var(--c-bad);
+  --color-lime: var(--c-lime);
   --font-serif: var(--font-fraunces);
   --font-sans: var(--font-manrope);
 }
@@ -85,3 +87,8 @@ h1, h2, .font-display {
 
 .scroll-thin::-webkit-scrollbar { width: 6px; }
 .scroll-thin::-webkit-scrollbar-thumb { background: var(--c-line); border-radius: 3px; }
+
+.grad-hero {
+  background: linear-gradient(90deg, #4a0f2c, #ff3d8f 35%, #f06ba8 55%, #ff3d8f 75%, #3a0c23);
+  color: #ffffff;
+}
