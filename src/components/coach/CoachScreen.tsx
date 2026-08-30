@@ -61,6 +61,34 @@ export default function CoachScreen({
     if (session.memory.plan) void askPermission();
   }, [session.memory.plan]);
 
+  // Replies she sends on WhatsApp flow back into the same loop: "done" ticks
+  // today's task, anything else is a message to the coach.
+  useEffect(() => {
+    let since = Date.now();
+    const t = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/whatsapp/inbox?since=${since}`);
+        const { messages } = await res.json();
+        for (const m of messages as { body: string; ts: number }[]) {
+          since = Math.max(since, m.ts);
+          if (/^done\b/i.test(m.body)) {
+            const pending = session.memory.commitments.find((c) => c.status === "pending");
+            if (pending) check(pending.id, true, "");
+            void fetch("/api/whatsapp/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: "Logged it. Quietly proud over here." }),
+            }).catch(() => {});
+          } else {
+            void send(`(via WhatsApp) ${m.body}`);
+          }
+        }
+      } catch { /* dev server gone or not configured — poll again later */ }
+    }, 5000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
+
   // The coach reaches out on her own after a quiet stretch — this is the
   // "it messages you first" beat, live, with no button press.
   useEffect(() => {
@@ -88,6 +116,11 @@ export default function CoachScreen({
     const name = next.memory.profile.name;
     notifyCoach(name ? `ovy → ${name}` : "ovy", fu.text, () => { setTab("chat"); setUnread(false); });
     setUnread(true);
+    void fetch("/api/whatsapp/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: msg }),
+    }).catch(() => {});
   }
 
   function check(commitmentId: string, done: boolean, reason: string) {
