@@ -148,8 +148,13 @@ export async function runTurn(s: Session, userMessage: string): Promise<TurnResu
     content: t.text,
   }));
 
+  const userTurns = s.transcript.filter((t) => t.role === "user").length;
+  const mustPlan = !s.memory.plan && userTurns >= 3;
+
   const system = redFlag.triggered
     ? `${SYSTEM}\n\n## OVERRIDE — SAFETY GATE TRIPPED\nReason: ${redFlag.reason}. Required action: ${redFlag.action}\nDo not coach this turn. Do not give a plan or set commitments. Respond with warmth, name what you heard, and direct them to real human care now. Keep every array empty and plan null.`
+    : mustPlan
+    ? `${SYSTEM}\n\n## OVERRIDE — INTAKE IS OVER\nYou have asked enough questions. Deliver the full plan THIS TURN in the "plan" field, calibrated to what you know (fill sensible gaps yourself, say what you assumed), set 1-3 starter commitments via newCommitments, and set phase to "session". Do not ask another intake question.`
     : SYSTEM;
 
   const out = await chatJSON<Raw>(system, [

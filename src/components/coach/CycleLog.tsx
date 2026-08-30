@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Droplets, NotebookPen } from "lucide-react";
+import FlareForecast from "../cycle/FlareForecast";
 import type { Session } from "@/lib/types";
 
 /* Period log as a uterus-shaped dot grid — one shape per month, one dot per
@@ -77,6 +78,8 @@ export default function CycleLog({
           </p>
         </div>
       )}
+
+      <FlareForecast session={session} />
 
       <div className="grid grid-cols-3 gap-x-2 gap-y-5 px-4 pt-4">
         {MONTHS.map((name, m) => {

@@ -31,11 +31,21 @@ export const seededSession = (): Session => ({
     },
     // Four days of check-ins and meals: enough for the Memory tab to have
     // something to show, and enough for the carb-crash rule to fire on open.
-    periodDates: ["2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-07-15", "2026-07-16", "2026-07-17"],
+    periodDates: ["2026-04-22", "2026-04-23", "2026-04-24", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-07-15", "2026-07-16", "2026-07-17"],
     cycleLogs: [
-      { date: "2026-07-15", flow: "light", pain: ["Cramps"], body: ["Bloating"], ts: 1 },
-      { date: "2026-07-16", flow: "heavy", pain: ["Cramps", "Backache"], body: ["Bloating", "Fatigue"], ts: 2 },
-      { date: "2026-07-17", flow: "medium", pain: [], body: ["Fatigue"], ts: 3 },
+      // May cycle (started Apr 22): pre-period cluster around day 21-25
+      { date: "2026-05-13", flow: null, pain: [], body: ["Acne flare", "Cravings"], ts: 1 },
+      { date: "2026-05-15", flow: null, pain: ["Cramps"], body: ["Bloating"], ts: 2 },
+      // June cycle (started Jun 3): cluster again days 21-26 pre the July period
+      { date: "2026-06-24", flow: null, pain: [], body: ["Acne flare", "Fatigue"], ts: 3 },
+      { date: "2026-06-26", flow: null, pain: ["Headache"], body: ["Cravings", "Bloating"], ts: 4 },
+      { date: "2026-06-28", flow: null, pain: ["Cramps"], body: ["Acne flare"], ts: 5 },
+      // July period itself
+      { date: "2026-07-15", flow: "light", pain: ["Cramps"], body: ["Bloating"], ts: 6 },
+      { date: "2026-07-16", flow: "heavy", pain: ["Cramps", "Backache"], body: ["Bloating", "Fatigue"], ts: 7 },
+      { date: "2026-07-17", flow: "medium", pain: [], body: ["Fatigue"], ts: 8 },
+      // current cycle (started Jul 15): the same cluster building again
+      { date: "2026-08-06", flow: null, pain: [], body: ["Acne flare", "Cravings"], ts: 9 },
     ],
     medications: [
       { id: "m1", name: "Metformin", dose: "500mg", kind: "medication", timings: ["morning", "evening"], remind: true },

@@ -282,33 +282,6 @@ export default function CoachScreen({
 
       </header>
 
-      {!session.memory.plan ? (
-        <>
-          {tab === "memory" ? (
-            <div key="memory" className="pop-spring flex min-h-0 flex-1 flex-col"><MemoryView memory={session.memory} /></div>
-          ) : (
-            <ChatThread session={session} busy={busy} error={error} onSend={send} />
-          )}
-          <nav className="shrink-0 border-t border-line bg-surface px-2 pb-4 pt-1.5">
-            <div className="flex">
-              {TABS.filter((t) => t.id === "chat" || t.id === "memory").map(({ id, label, Icon }) => (
-                <button key={id} onClick={() => setTab(id)}
-                  className="flex flex-1 flex-col items-center gap-0.5 py-1">
-                  <span className={`grid h-8 w-14 place-items-center rounded-full transition ${
-                    (tab === id || (tab !== "memory" && id === "chat")) ? "bg-brandsoft text-brand" : "text-faint"
-                  }`}>
-                    <Icon size={19} strokeWidth={tab === id ? 2.4 : 1.9} />
-                  </span>
-                  <span className={`text-[9.5px] font-bold ${(tab === id || (tab !== "memory" && id === "chat")) ? "text-brand" : "text-faint"}`}>
-                    {label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </nav>
-        </>
-      ) : (
-        <>
       {tab === "today" && (
         <TodayScreen
           session={session}
@@ -352,8 +325,6 @@ export default function CoachScreen({
           ))}
         </div>
       </nav>
-        </>
-      )}
     </div>
   );
 }
